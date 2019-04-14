@@ -4,17 +4,20 @@
 
   <data>
     <variable name="viewmodel"
-              type="de.niku.braincards.view.fragment_card_sets.CardSetsViewModel" />
+              type="de.niku.braincards.view.fragment_card_sets.CardSetsViewModel"/>
   </data>
 
   <FrameLayout
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="match_parent"
+  >
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
+            android:text="@string/hello_blank_fragment"
+            android:gravity="center"
+    />
 
   </FrameLayout>
 
