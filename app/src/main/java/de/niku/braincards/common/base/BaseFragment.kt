@@ -26,13 +26,15 @@ abstract class BaseFragment<D : ViewDataBinding, V : ViewModel> : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mDataBinding = DataBindingUtil.inflate(layoutInflater, getLayoutResId(), container, false)
         mDataBinding.setVariable(getViewBindingId(), mViewModel)
+        performExtraViewBinding()
+        mDataBinding.lifecycleOwner = this
         mDataBinding.executePendingBindings()
         var view = mDataBinding.root
         return view
-
     }
 
     protected abstract fun getLayoutResId() : Int
     protected abstract fun getViewBindingId() : Int
+    protected abstract fun performExtraViewBinding()
 
 }

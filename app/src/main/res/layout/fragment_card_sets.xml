@@ -1,25 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools">
+        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <data>
     <variable name="viewmodel"
               type="de.niku.braincards.view.fragment_card_sets.CardSetsViewModel"/>
+    <variable name="viewstate" type="de.niku.braincards.common.base.ViewState"/>
+
+    <import type="de.niku.braincards.common.base.ViewState"/>
+    <import type="android.view.View"/>
   </data>
 
-  <FrameLayout
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
-  >
+          android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"
-            android:gravity="center"
+            android:orientation="vertical">
+      <FrameLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_card_sets"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/list_item_card_set"
+                android:visibility="@{viewstate.state == ViewState.CONTENT ? View.VISIBLE : View.GONE}"/>
+
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:visibility="@{viewstate.state == ViewState.EMPTY ? View.VISIBLE : View.GONE}"
+                     tools:visibility="gone">
+          <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:text="@string/card_sets_list_empty"/>
+        </FrameLayout>
+
+        <include layout="@layout/loading_animation"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 app:show="@{viewmodel.vdShowLoadingAnimation}"
+                 />
+
+      </FrameLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:src="@drawable/ic_add_black_24dp"
+            android:tint="@android:color/white"
+            android:onClick="@{v -> viewmodel.createCardSetClick()}"
     />
 
-  </FrameLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </layout>

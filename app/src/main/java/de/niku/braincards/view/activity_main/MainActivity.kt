@@ -15,4 +15,5 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun getLayoutResId() = R.layout.activity_main
     override fun getViewBindingId() = BR.viewmodel
+
 }

@@ -15,7 +15,11 @@ class BrainCardsApplication : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder().application(this).build().inject(this)
+        DaggerAppComponent
+            .builder()
+            .application(this)
+            .build()
+            .inject(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {

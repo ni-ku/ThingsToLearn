@@ -4,9 +4,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import de.niku.braincards.BrainCardsApplication
-import de.niku.braincards.di.module.ActivitiesModule
-import de.niku.braincards.di.module.DataRepoModule
-import de.niku.braincards.di.module.FragmentModule
+import de.niku.braincards.di.module.*
 import javax.inject.Singleton
 
 @Singleton
@@ -14,7 +12,9 @@ import javax.inject.Singleton
     AndroidInjectionModule::class,
     ActivitiesModule::class,
     FragmentModule::class,
-    DataRepoModule::class
+    DataRepoModule::class,
+    DbModule::class,
+    AppModule::class
 ])
 interface AppComponent {
 
@@ -23,6 +23,7 @@ interface AppComponent {
 
         @BindsInstance
         fun application(application: BrainCardsApplication): Builder
+
         fun build(): AppComponent
     }
 
