@@ -1,3 +1,41 @@
 <resources>
 
+  <!--
+    TEXT STYLES
+  -->
+  <style name="App.Text" parent="TextAppearance.AppCompat"></style>
+  <style name="App.Text.Title" parent="TextAppearance.AppCompat.Title"></style>
+  <style name="App.Text.Subtitle" parent="TextAppearance.AppCompat.Subhead"></style>
+
+  <!--
+    TEXTVIEW STYLES
+  -->
+  <style name="App.TextView" parent="@android:style/Widget.Material.TextView">
+    <item name="android:textAppearance">@style/App.Text</item>
+  </style>
+
+  <style name="App.TextView.Title" parent="@style/App.TextView">
+    <item name="android:textAppearance">@style/App.Text.Title</item>
+  </style>
+
+  <style name="App.TextView.Subtitle" parent="@style/App.TextView">
+    <item name="android:textAppearance">@style/App.Text.Subtitle</item>
+  </style>
+
+  <!--
+    BUTTON STYLES
+  -->
+  <style name="App.Button" parent="Widget.MaterialComponents.Button.UnelevatedButton"></style>
+  <style name="App.Button.Text" parent="Widget.MaterialComponents.Button.TextButton"></style>
+  <style name="App.Button.Icon" parent="Widget.MaterialComponents.Button.UnelevatedButton.Icon"></style>
+
+  <!--
+    TEXTINPUTLAYOUT STYLES
+  -->
+  <style name="App.TextInputLayout" parent="Widget.Design.TextInputLayout"></style>
+
+  <!--
+    TEXTINPUTEDITTEXT STYLES
+  -->
+
 </resources>

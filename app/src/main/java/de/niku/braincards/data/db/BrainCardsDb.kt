@@ -4,13 +4,20 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import de.niku.braincards.data.db.dao.CardDao
 import de.niku.braincards.data.db.dao.CardSetDao
+import de.niku.braincards.data.db.dao.CardSetWithCardsDao
+import de.niku.braincards.data.db.dao.QuestionsDao
+import de.niku.braincards.data.db.entity.TblCard
 import de.niku.braincards.data.db.entity.TblCardSet
+import de.niku.braincards.data.db.entity.TblQuestion
 
 @Database(
     version = 1,
     entities = [
-        TblCardSet::class
+        TblCardSet::class,
+        TblCard::class,
+        TblQuestion::class
     ]
 )
 abstract class BrainCardsDb : RoomDatabase() {
@@ -34,4 +41,8 @@ abstract class BrainCardsDb : RoomDatabase() {
     }
 
     abstract fun CardSetDao(): CardSetDao
+    abstract fun CardDao(): CardDao
+    abstract fun QuestionsDao(): QuestionsDao
+
+    abstract fun CardSetWithCardsDao(): CardSetWithCardsDao
 }

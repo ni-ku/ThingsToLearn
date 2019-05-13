@@ -2,8 +2,33 @@
   <string name="app_name">Brain Cards</string>
 
   <!-- General - used in several places -->
+  <string name="done">Done</string>
+  <string name="cancel">Cancel</string>
   <string name="cards_colon">Cards:</string>
+  <string name="cards">Cards</string>
+  <string name="edit">Edit</string>
+  <string name="delete">Delete</string>
 
   <!-- CardSets Fragment -->
+  <string name="card_sets">CardSets</string>
   <string name="card_sets_list_empty">You haven\'t created any CardSets yet.</string>
+
+  <!-- Create CardSet Fragment -->
+  <string name="create_card_set">Create CardSet</string>
+  <string name="front_colon">Front:</string>
+  <string name="back_colon">Back:</string>
+  <string name="create_card_set_from_error_name_empty">Name value can\'t be empty</string>
+  <string name="question_colon">Question:</string>
+
+  <!-- Create Card Dialog -->
+  <string name="create_card">Create Card</string>
+  <string name="create_card_form_error_front_empty">Front value can\'t be empty</string>
+  <string name="create_card_form_error_back_empty">Back value can\'t be empty</string>
+
+  <!-- Create Question Dialog -->
+  <string name="question">Question</string>
+  <string name="create_question_dialog_title">Create Question</string>
+  <string name="create_question_form_error_question_empty">Question value can\'t be empty</string>
+  <string name="create_question_form_error_question_include_value">Question has to include {front} or {back}</string>
+
 </resources>

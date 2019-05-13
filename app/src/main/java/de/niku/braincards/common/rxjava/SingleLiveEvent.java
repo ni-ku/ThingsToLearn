@@ -1,4 +1,4 @@
-package de.niku.braincards.common.live_data;
+package de.niku.braincards.common.rxjava;
 
 /*
  *  Copyright 2017 Google Inc.

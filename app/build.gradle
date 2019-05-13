@@ -49,6 +49,7 @@ dependencies {
     // app dependencies
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.core:core-ktx:$kotlin_extensions_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.databinding:databinding-compiler:$gradle_version"
 
     implementation "androidx.appcompat:appcompat:$app_compat_version"

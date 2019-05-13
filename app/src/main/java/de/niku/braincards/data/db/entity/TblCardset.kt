@@ -1,6 +1,7 @@
 package de.niku.braincards.data.db.entity
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -8,7 +9,7 @@ import androidx.room.PrimaryKey
 )
 data class TblCardSet(
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    val id: Long?,
     val name: String,
     val cardCnt: Int
 )

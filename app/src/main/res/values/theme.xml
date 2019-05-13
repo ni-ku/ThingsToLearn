@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+  <style name="App.Theme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Customize your theme here. -->
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="android:windowBackground">@color/window_background</item>
+    <!-- sharedElement transitions -->
+    <item name="android:windowContentTransitions">true</item>
+    <!-- global widget styles -->
+    <item name="android:buttonStyle">@style/App.Button</item>
+    <item name="materialButtonStyle">@style/App.Button</item>
+    <item name="android:textViewStyle">@style/App.TextView</item>
+
+    <item name="android:alertDialogTheme">@style/App.Theme.Dialog</item>
+    <item name="alertDialogTheme">@style/App.Theme.Dialog</item>
+    <item name="android:dialogTheme">@style/App.Theme.Dialog</item>
+    <item name="dialogTheme">@style/App.Theme.Dialog</item>
+  </style>
+
+  <style name="App.Theme.Dialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+    <item name="android:buttonStyle">@style/App.Button.Text</item>
+    <item name="materialButtonStyle">@style/App.Button.Text</item>
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 

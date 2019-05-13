@@ -7,7 +7,7 @@ import de.niku.braincards.R
 import de.niku.braincards.common.adapter.BaseAdapter
 import de.niku.braincards.model.CardSet
 
-class CardSetAdapter(listItems: List<CardSet>) : BaseAdapter<CardSet>(listItems) {
+class CardSetAdapter(listItems: MutableList<CardSet>) : BaseAdapter<CardSet>(listItems) {
 
     override fun getLayoutId(position: Int, obj: CardSet): Int {
         return R.layout.list_item_card_set

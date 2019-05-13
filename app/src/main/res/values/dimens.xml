@@ -6,6 +6,16 @@
   <dimen name="spacing_normal">16dp</dimen>
   <dimen name="spacing_large">32dp</dimen>
 
+  <!-- ICON SIZES
+  -->
+  <dimen name="icon_click_area">48dp</dimen>
+  <dimen name="icon_size">24dp</dimen>
+
+  <!-- FLOATING ACTION BUTTON
+  -->
+  <dimen name="fab_size">56dp</dimen>
+  <dimen name="fab_elevation">6dp</dimen>
+
   <dimen name="card_corner_radius">2dp</dimen>
   <dimen name="card_elevation">2dp</dimen>
 </resources>

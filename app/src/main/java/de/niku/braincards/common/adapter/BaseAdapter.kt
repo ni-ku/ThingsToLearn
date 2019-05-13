@@ -7,18 +7,23 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    var listItems: List<T>
+    var listItems: MutableList<T>
 
-    constructor(listItems: List<T>) : this() {
+    constructor(listItems: MutableList<T>) : super() {
         this.listItems = listItems
     }
 
     constructor() {
-        listItems = emptyList()
+        listItems = mutableListOf()
     }
 
-    fun setListItem(listItems: List<T>) {
+    fun setListItem(listItems: MutableList<T>) {
         this.listItems = listItems
+        notifyDataSetChanged()
+    }
+
+    fun addItem(item: T) {
+        listItems.add(item)
         notifyDataSetChanged()
     }
 

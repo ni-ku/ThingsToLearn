@@ -1,20 +1,32 @@
 package de.niku.braincards.data.repo.card_set
 
 import android.annotation.SuppressLint
+import de.niku.braincards.data.db.dao.CardDao
 import de.niku.braincards.data.db.dao.CardSetDao
+import de.niku.braincards.data.db.dao.CardSetWithCardsDao
+import de.niku.braincards.data.db.dao.QuestionsDao
+import de.niku.braincards.data.db.entity.CardSetWithCards
+import de.niku.braincards.data.db.entity.TblCard
 import de.niku.braincards.data.db.entity.TblCardSet
+import de.niku.braincards.data.db.entity.TblQuestion
+import de.niku.braincards.model.Card
 import de.niku.braincards.model.CardSet
+import de.niku.braincards.model.Question
 import io.reactivex.Observable
 
 class CardSetRepoImpl(
-    val cardSetDao: CardSetDao
+    val cardSetDao: CardSetDao,
+    val cardDao: CardDao,
+    val questionDao: QuestionsDao,
+    val cardSetWithCardsDao: CardSetWithCardsDao
 ) : CardSetRepo {
 
     @SuppressLint("CheckResult")
     override fun fetchCardSets(): Observable<List<CardSet>> {
-        return Observable.create<List<TblCardSet>> {
+        return Observable.create<List<CardSetWithCards>> {
             run {
-                val cardSets = cardSetDao.getCardSets()
+
+                val cardSets = cardSetWithCardsDao.getCardSets()
                 it.onNext(cardSets)
 
             }
@@ -28,10 +40,31 @@ class CardSetRepoImpl(
                     Observable.fromIterable(list)
                         .map { item ->
                             run {
+                                val cards: MutableList<Card> = mutableListOf()
+                                for (c in item.cards) {
+                                    var card = Card(
+                                        c.id,
+                                        c.front,
+                                        c.back
+                                    )
+                                    cards.add(card)
+                                }
+
+                                val questions: MutableList<Question> = mutableListOf()
+                                for (q in item.questions) {
+                                    var question = Question(
+                                        q.id,
+                                        q.question
+                                    )
+                                    questions.add(question)
+                                }
+
                                 var cs = CardSet(
-                                    item.id,
-                                    item.name,
-                                    item.cardCnt
+                                    item.cardSet.id,
+                                    item.cardSet.name,
+                                    item.cardSet.cardCnt,
+                                    cards,
+                                    questions
                                 )
                                 return@run cs
                             }
@@ -43,5 +76,30 @@ class CardSetRepoImpl(
         }
     }
 
+    @SuppressLint("CheckResult")
+    override fun createCardSet(name: String,
+                               cards: List<Card>,
+                               questions: List<Question>): Observable<CardSet> {
+        return Observable.create<CardSet> {
+            run {
+                val cardSetTbl = TblCardSet(null, name, cards.size)
+                val cardSetId = cardSetDao.insert(cardSetTbl)
+
+                for (card in cards) {
+                    var tblCard = TblCard(null, card.front, card.back, cardSetId)
+                    cardDao.insert(tblCard)
+                }
+
+                for (question in questions) {
+                    var tblQuestion = TblQuestion(null, question.text, cardSetId)
+                    questionDao.insert(tblQuestion)
+                }
+
+                val cardSet = CardSet(cardSetId, name, cards.size, mutableListOf(), mutableListOf())
+                it.onNext(cardSet)
+
+            }
+        }
+    }
 }
 

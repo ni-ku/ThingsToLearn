@@ -7,13 +7,13 @@ import de.niku.braincards.data.db.entity.TblCardSet
 interface CardSetDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCardSet(cardset: TblCardSet): Long
+    fun insert(cardset: TblCardSet): Long
 
     @Update
-    fun updateCardSet(cardset: TblCardSet)
+    fun update(cardset: TblCardSet)
 
     @Delete
-    fun deleteCardSet(cardset: TblCardSet)
+    fun delete(cardset: TblCardSet)
 
     @Query("SELECT * FROM cardsets")
     fun getCardSets(): List<TblCardSet>

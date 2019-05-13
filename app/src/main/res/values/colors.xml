@@ -4,5 +4,14 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <!-- components -->
     <color name="loading_animation_background_color">#55FFFFFF</color>
+    <color name="window_background">@color/white</color>
+    <color name="default_text">#808080</color>
+    <color name="error">#FF0000</color>
+
+    <!-- app colors -->
+    <color name="white">@android:color/white</color>
+    <color name="black">@android:color/black</color>
+
 </resources>
