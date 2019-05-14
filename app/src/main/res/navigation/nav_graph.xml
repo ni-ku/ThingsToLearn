@@ -12,7 +12,12 @@
     tools:layout="@layout/fragment_card_sets"
     >
     <action android:id="@+id/action_main_to_create_card_set"
-            app:destination="@id/card_set_create_fragment"/>
+            app:destination="@id/card_set_create_fragment">
+      <argument android:name="cardSetId"
+                android:defaultValue="0L"
+                app:argType="long"
+                />
+    </action>
   </fragment>
 
   <fragment
@@ -21,6 +26,9 @@
           android:label="@string/create_card_set"
           tools:layout="@layout/fragment_card_set_create"
           >
+    <argument android:name="cardSetId"
+              android:defaultValue="0L"
+              app:argType="long"/>
   </fragment>
 
 </navigation>

@@ -58,6 +58,10 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
                     is CardSetsEvents.ShowCardSetDeleteError -> {
                         showCardSetDeleteErrorDialog()
                     }
+                    is CardSetsEvents.NavigateEditCardSet -> {
+                        val action = CardSetsFragmentDirections.actionMainToCreateCardSet(evt.id)
+                        findNavController().navigate(action)
+                    }
                 }
             }
         })

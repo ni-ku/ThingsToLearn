@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.niku.braincards.R
 import de.niku.braincards.BR
@@ -18,6 +19,8 @@ import de.niku.braincards.view.fragment_card_create.*
 class CardSetCreateFragment : BaseFragment<FragmentCardSetCreateBinding, CardSetCreateViewModel>(),
     ResultReceiver,
     de.niku.braincards.view.dialog_question_create.ResultReceiver {
+
+    val args: CardSetCreateFragmentArgs by navArgs()
 
     lateinit var cardsAdapter: CardAdapter
     lateinit var questionsAdapter: QuestionAdapter
@@ -46,6 +49,11 @@ class CardSetCreateFragment : BaseFragment<FragmentCardSetCreateBinding, CardSet
 
         mDataBinding.rvQuestions.layoutManager = LinearLayoutManager(context)
         mDataBinding.rvQuestions.adapter = questionsAdapter
+
+        val idToEdit = args.cardSetId
+        if (idToEdit != 0L) {
+            mViewModel.fetchCardSetById(idToEdit)
+        }
     }
 
     override fun onDestroy() {

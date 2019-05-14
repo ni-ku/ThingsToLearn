@@ -134,7 +134,7 @@
             android:layout_marginEnd="@dimen/spacing_normal"
             android:src="@drawable/ic_done_black_24dp"
             android:tint="@android:color/white"
-            android:onClick="@{v -> viewmodel.finishCreateCardSetClick()}"
+            android:onClick="@{v -> viewmodel.onFinishClick()}"
     />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>

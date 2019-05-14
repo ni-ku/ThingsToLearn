@@ -76,6 +76,46 @@ class CardSetRepoImpl(
             }
     }
 
+    override fun fetchCardSet(id: Long): Observable<CardSet> {
+        return Observable.create<CardSetWithCards> {
+            run {
+                val cardSet = cardSetWithCardsDao.getCardSetById(id)
+                it.onNext(cardSet)
+            }
+        }
+            .map { item ->
+                run {
+                    val cards: MutableList<Card> = mutableListOf()
+                    for (c in item.cards) {
+                        var card = Card(
+                            c.id,
+                            c.front,
+                            c.back
+                        )
+                        cards.add(card)
+                    }
+
+                    val questions: MutableList<Question> = mutableListOf()
+                    for (q in item.questions) {
+                        var question = Question(
+                            q.id,
+                            q.question
+                        )
+                        questions.add(question)
+                    }
+
+                    var cs = CardSet(
+                        item.cardSet.id,
+                        item.cardSet.name,
+                        item.cardSet.cardCnt,
+                        cards,
+                        questions
+                    )
+                    return@run cs
+                }
+            }
+    }
+
     @SuppressLint("CheckResult")
     override fun createCardSet(
         name: String,
@@ -113,6 +153,29 @@ class CardSetRepoImpl(
                 } else {
                     it.onError(Throwable("Could not find entry with given id."))
                 }
+            }
+        }
+    }
+
+    override fun updateCardSet(cardSet: CardSet): Observable<Boolean> {
+        return Observable.create<Boolean> {
+            run {
+                val cardSetTbl = TblCardSet(cardSet.id, cardSet.name, cardSet.cards.size)
+                cardSetDao.update(cardSetTbl)
+
+                cardDao.deleteAllCardsForCardSet(cardSet.id!!)
+                for (card in cardSet.cards) {
+                    var tblCard = TblCard(card.id, card.front, card.back, cardSet.id!!)
+                    cardDao.insert(tblCard)
+                }
+
+                questionDao.deleteAllQuestionsForCardSet(cardSet.id!!)
+                for (question in cardSet.questions) {
+                    var tblQuestion = TblQuestion(question.id, question.text, cardSet.id!!)
+                    questionDao.insert(tblQuestion)
+                }
+
+                it.onNext(true)
             }
         }
     }

@@ -54,7 +54,7 @@ class CardSetsViewModel(
     }
 
     fun onCardSetEditClick(position: Int) {
-
+        mEvents.value = CardSetsEvents.NavigateEditCardSet(mCardSets.value!!.get(position).id!!)
     }
 
     fun onCardSetDeleteClick(position: Int) {
@@ -65,7 +65,7 @@ class CardSetsViewModel(
     @SuppressLint("CheckResult")
     fun onCardSetDelete() {
         if (mTmpPos != -1) {
-            cardSetRepo.deleteCardSet(120)
+            cardSetRepo.deleteCardSet(mCardSets.value!!.get(mTmpPos).id!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ v ->

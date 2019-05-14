@@ -6,6 +6,7 @@ import de.niku.braincards.R
 import de.niku.braincards.common.base.BaseViewModel
 import de.niku.braincards.data.repo.card_set.CardSetRepo
 import de.niku.braincards.model.Card
+import de.niku.braincards.model.CardSet
 import de.niku.braincards.model.Question
 import de.niku.braincards.view.dialog_question_create.QuestionEditParams
 import de.niku.braincards.view.fragment_card_create.CardEditParams
@@ -21,15 +22,30 @@ class CardSetCreateViewModel(
     val cards: MutableLiveData<MutableList<Card>> = MutableLiveData()
     val questions: MutableLiveData<MutableList<Question>> = MutableLiveData()
 
-    /*
-        Build hashmap of initial card set values
-        to compare against if cards/questions have changed and needs to be updated.
-        New Added Cards will have no id so they neeed to be stored.
-     */
+    val editCardSet: MutableLiveData<CardSet> = MutableLiveData()
 
     init {
         cards.value = mutableListOf()
         questions.value = mutableListOf()
+    }
+
+    @SuppressLint("CheckResult")
+    fun fetchCardSetById(id: Long) {
+        cardSetRepo.fetchCardSet(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ cardSet ->
+                run {
+                    editCardSet.value = cardSet
+                    name.value = cardSet.name
+                    cards.value = cardSet.cards.toMutableList()
+                    questions.value = cardSet.questions.toMutableList()
+                }
+
+            }, { error ->
+                run {
+                }
+            })
     }
 
     fun createCardClick() {
@@ -57,7 +73,7 @@ class CardSetCreateViewModel(
 
     fun onCardEdited(position: Int, front: String, back: String) {
         var card = Card(
-            null,
+            cards.value?.get(position)?.id,
             front,
             back
         )
@@ -101,8 +117,16 @@ class CardSetCreateViewModel(
         questions.value = questions.value
     }
 
+    fun onFinishClick() {
+        if (editCardSet.value == null) {
+            finishCreateCardSet()
+        } else {
+            finishEditCardSet()
+        }
+    }
+
     @SuppressLint("CheckResult")
-    fun finishCreateCardSetClick() {
+    fun finishCreateCardSet() {
         val nameValue = name.value
         if (nameValue == null || nameValue.isEmpty()) {
             nameError.value = mResHelper?.getString(R.string.create_card_set_from_error_name_empty)
@@ -131,6 +155,30 @@ class CardSetCreateViewModel(
                 run {
                 }
             })
+    }
 
+    @SuppressLint("CheckResult")
+    fun finishEditCardSet() {
+
+        var cardSet = CardSet(
+            editCardSet.value!!.id,
+            name.value!!,
+            cards.value!!.size,
+            cards.value!!.toList(),
+            questions.value!!
+        )
+
+        cardSetRepo.updateCardSet(cardSet)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ v ->
+                run {
+                    mEvents.value = CardSetCreateEvents.CardSetCreateSuccess()
+                }
+            }, { error ->
+                run {
+
+                }
+            })
     }
 }

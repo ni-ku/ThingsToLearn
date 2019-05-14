@@ -15,6 +15,9 @@ interface CardDao {
     @Delete
     fun delete(card: TblCard)
 
+    @Query("DELETE FROM cards WHERE card_set_id = :id")
+    fun deleteAllCardsForCardSet(id: Long)
+
     @Query("SELECT * FROM cards")
     fun getCards(): List<TblCard>?
 }
