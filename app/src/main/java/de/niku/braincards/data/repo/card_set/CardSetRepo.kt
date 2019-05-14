@@ -11,4 +11,5 @@ interface CardSetRepo {
     fun createCardSet(name: String,
                       cards: List<Card>,
                       questions: List<Question>): Observable<CardSet>
+    fun deleteCardSet(id: Long): Observable<Boolean>
 }

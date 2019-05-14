@@ -21,6 +21,12 @@ class CardSetCreateViewModel(
     val cards: MutableLiveData<MutableList<Card>> = MutableLiveData()
     val questions: MutableLiveData<MutableList<Question>> = MutableLiveData()
 
+    /*
+        Build hashmap of initial card set values
+        to compare against if cards/questions have changed and needs to be updated.
+        New Added Cards will have no id so they neeed to be stored.
+     */
+
     init {
         cards.value = mutableListOf()
         questions.value = mutableListOf()

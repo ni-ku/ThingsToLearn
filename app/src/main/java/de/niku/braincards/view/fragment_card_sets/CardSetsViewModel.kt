@@ -1,6 +1,7 @@
 package de.niku.braincards.view.fragment_card_sets
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import de.niku.braincards.common.base.BaseViewModel
 import de.niku.braincards.common.base.ViewState
@@ -17,7 +18,8 @@ class CardSetsViewModel(
     var vdShowLoadingAnimation: MutableLiveData<Boolean> = MutableLiveData()
     var vdViewState: ViewState = ViewState()
 
-    var mCardSets: MutableLiveData<List<CardSet>> = MutableLiveData()
+    var mCardSets: MutableLiveData<MutableList<CardSet>> = MutableLiveData()
+    var mTmpPos = -1
 
 
     @SuppressLint("CheckResult")
@@ -33,7 +35,7 @@ class CardSetsViewModel(
                         vdViewState.state.value = ViewState.EMPTY
                     } else {
                         vdViewState.state.value = ViewState.CONTENT
-                        mCardSets.value = list
+                        mCardSets.value = list.toMutableList()
                     }
                 }
 
@@ -48,6 +50,34 @@ class CardSetsViewModel(
     }
 
     fun createCardSetClick() {
-        mEvents.value = CardSetsEvents.navigateCreateCardSet()
+        mEvents.value = CardSetsEvents.NavigateCreateCardSet()
+    }
+
+    fun onCardSetEditClick(position: Int) {
+
+    }
+
+    fun onCardSetDeleteClick(position: Int) {
+        mTmpPos = position
+        mEvents.value = CardSetsEvents.ShowConfirmDeleteDialog()
+    }
+
+    @SuppressLint("CheckResult")
+    fun onCardSetDelete() {
+        if (mTmpPos != -1) {
+            cardSetRepo.deleteCardSet(120)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ v ->
+                    run {
+                        fetchCardSets()
+                    }
+                }, { error ->
+                    run {
+                        mEvents.value = CardSetsEvents.ShowCardSetDeleteError()
+                    }
+                }
+                )
+        }
     }
 }

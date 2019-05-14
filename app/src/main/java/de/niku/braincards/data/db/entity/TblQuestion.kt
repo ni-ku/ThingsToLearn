@@ -1,6 +1,7 @@
 package de.niku.braincards.data.db.entity
 
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 
 @Entity(
     tableName = "questions",
@@ -9,7 +10,8 @@ import androidx.room.*
         ForeignKey(
             entity = TblCardSet::class,
             parentColumns = ["id"],
-            childColumns = ["card_set_id"]
+            childColumns = ["card_set_id"],
+            onDelete = CASCADE
         )
     ]
 

@@ -13,7 +13,10 @@ interface CardSetDao {
     fun update(cardset: TblCardSet)
 
     @Delete
-    fun delete(cardset: TblCardSet)
+    fun delete(cardset: TblCardSet): Int
+
+    @Query("DELETE FROM cardsets WHERE id = :id")
+    fun deleteById(id: Long): Int
 
     @Query("SELECT * FROM cardsets")
     fun getCardSets(): List<TblCardSet>

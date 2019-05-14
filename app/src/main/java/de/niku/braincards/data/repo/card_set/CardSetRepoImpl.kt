@@ -31,55 +31,57 @@ class CardSetRepoImpl(
 
             }
         }
-.flatMap { list ->
-            run {
-                if (list.isEmpty()) {
-                    var emptyList: List<CardSet> = mutableListOf()
-                    Observable.just(emptyList)
-                } else {
-                    Observable.fromIterable(list)
-                        .map { item ->
-                            run {
-                                val cards: MutableList<Card> = mutableListOf()
-                                for (c in item.cards) {
-                                    var card = Card(
-                                        c.id,
-                                        c.front,
-                                        c.back
-                                    )
-                                    cards.add(card)
-                                }
+            .flatMap { list ->
+                run {
+                    if (list.isEmpty()) {
+                        var emptyList: List<CardSet> = mutableListOf()
+                        Observable.just(emptyList)
+                    } else {
+                        Observable.fromIterable(list)
+                            .map { item ->
+                                run {
+                                    val cards: MutableList<Card> = mutableListOf()
+                                    for (c in item.cards) {
+                                        var card = Card(
+                                            c.id,
+                                            c.front,
+                                            c.back
+                                        )
+                                        cards.add(card)
+                                    }
 
-                                val questions: MutableList<Question> = mutableListOf()
-                                for (q in item.questions) {
-                                    var question = Question(
-                                        q.id,
-                                        q.question
-                                    )
-                                    questions.add(question)
-                                }
+                                    val questions: MutableList<Question> = mutableListOf()
+                                    for (q in item.questions) {
+                                        var question = Question(
+                                            q.id,
+                                            q.question
+                                        )
+                                        questions.add(question)
+                                    }
 
-                                var cs = CardSet(
-                                    item.cardSet.id,
-                                    item.cardSet.name,
-                                    item.cardSet.cardCnt,
-                                    cards,
-                                    questions
-                                )
-                                return@run cs
+                                    var cs = CardSet(
+                                        item.cardSet.id,
+                                        item.cardSet.name,
+                                        item.cardSet.cardCnt,
+                                        cards,
+                                        questions
+                                    )
+                                    return@run cs
+                                }
                             }
-                        }
-                        .toList()
-                        .toObservable()
+                            .toList()
+                            .toObservable()
+                    }
                 }
             }
-        }
     }
 
     @SuppressLint("CheckResult")
-    override fun createCardSet(name: String,
-                               cards: List<Card>,
-                               questions: List<Question>): Observable<CardSet> {
+    override fun createCardSet(
+        name: String,
+        cards: List<Card>,
+        questions: List<Question>
+    ): Observable<CardSet> {
         return Observable.create<CardSet> {
             run {
                 val cardSetTbl = TblCardSet(null, name, cards.size)
@@ -98,6 +100,19 @@ class CardSetRepoImpl(
                 val cardSet = CardSet(cardSetId, name, cards.size, mutableListOf(), mutableListOf())
                 it.onNext(cardSet)
 
+            }
+        }
+    }
+
+    override fun deleteCardSet(id: Long): Observable<Boolean> {
+        return Observable.create<Boolean> {
+            run {
+                var deletedRowsCnt = cardSetDao.deleteById(id)
+                if (deletedRowsCnt > 0) {
+                    it.onNext(true)
+                } else {
+                    it.onError(Throwable("Could not find entry with given id."))
+                }
             }
         }
     }
