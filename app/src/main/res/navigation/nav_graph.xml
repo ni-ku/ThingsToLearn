@@ -21,14 +21,6 @@
           android:label="@string/create_card_set"
           tools:layout="@layout/fragment_card_set_create"
           >
-    <action android:id="@+id/action_card_set_create_to_card_create_fragment"
-            app:destination="@+id/card_create_fragment"
-    />
   </fragment>
-
-  <fragment android:id="@+id/card_create_fragment"
-            android:name="de.niku.braincards.view.fragment_card_create.CardCreateFragment"
-            android:label="@string/create_card"
-            tools:layout="@layout/fragment_card_create"/>
 
 </navigation>
