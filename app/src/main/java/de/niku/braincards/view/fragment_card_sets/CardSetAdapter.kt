@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import de.niku.braincards.R
 import de.niku.braincards.common.adapter.BaseAdapter
@@ -32,6 +33,7 @@ class CardSetAdapter(
         viewHolder.title.text = cardSet.name
         viewHolder.cardCnt.text = cardSet.cardCnt.toString()
         viewHolder.btnMore.setOnClickListener(getMenuClickListener(position))
+        viewHolder.itemClickView.setOnClickListener(getItemClickListener(position))
     }
 
     fun getMenuClickListener(position: Int) : View.OnClickListener {
@@ -53,8 +55,15 @@ class CardSetAdapter(
                     }
                     false
                 }
-
                 popupMenu.show()
+            }
+        }
+    }
+
+    fun getItemClickListener(position: Int) : View.OnClickListener {
+        return View.OnClickListener { v ->
+            run {
+                viewModel?.onShowCardSetDetailClick(position)
             }
         }
     }
@@ -64,11 +73,13 @@ class CardSetAdapter(
         var title: TextView
         var cardCnt: TextView
         var btnMore: AppCompatImageButton
+        var itemClickView: ConstraintLayout
 
         constructor(view: View) : super(view) {
             title = view.findViewById(R.id.tv_title)
             cardCnt = view.findViewById(R.id.tv_cards_cnt)
             btnMore = view.findViewById(R.id.btn_menu)
+            itemClickView = view.findViewById(R.id.cl_item_view)
         }
     }
 }

@@ -80,4 +80,11 @@ class CardSetsViewModel(
                 )
         }
     }
+
+    fun onShowCardSetDetailClick(position: Int) {
+        mEvents.value = CardSetsEvents.NavigateCardSetDetail(
+            mCardSets.value?.get(position)?.id!!,
+            mCardSets.value?.get(position)?.name!!
+        )
+    }
 }

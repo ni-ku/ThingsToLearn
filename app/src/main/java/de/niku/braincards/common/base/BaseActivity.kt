@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -46,6 +47,7 @@ abstract class BaseActivity<D : ViewDataBinding, V : ViewModel> : AppCompatActiv
     fun setupToolbar() {
         setSupportActionBar(mToolbar)
         setupActionBarWithNavController(mNavController)
+        //NavigationUI.setupWithNavController(mToolbar, mNavController)
     }
 
     override fun onSupportNavigateUp(): Boolean {

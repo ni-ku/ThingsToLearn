@@ -33,9 +33,15 @@
   <string name="create_question_form_error_question_empty">Question value can\'t be empty</string>
   <string name="create_question_form_error_question_include_value">Question has to include {front} or {back}</string>
 
+  <!-- CardSet Detail Fragment -->
+  <string name="start_lerning">Start learning</string>
+  <string name="view_cards">View cards</string>
+
+
   <!-- Dialogs -->
   <string name="dialog_delete_card_set_error_title">Error</string>
-  <string name="dialog_delete_card_set_error_text">An unexpected error occured while trying to delete the cardset.</string>
+  <string name="dialog_delete_card_set_error_text">An unexpected error occured while trying to delete the cardset.
+  </string>
   <string name="dialog_confirm_delete_card_set_title">Delete CardSet?</string>
   <string name="dialog_confirm_delete_card_set_text">Are you sure you want to delete this CardSet?</string>
 

@@ -6,7 +6,7 @@
   <dimen name="spacing_normal">16dp</dimen>
   <dimen name="spacing_large">32dp</dimen>
 
-  <integer name="transition_duration">300</integer>
+  <integer name="transition_duration">200</integer>
 
   <!-- ICON SIZES
   -->

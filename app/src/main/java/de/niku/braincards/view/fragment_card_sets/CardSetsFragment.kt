@@ -62,6 +62,10 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
                         val action = CardSetsFragmentDirections.actionMainToCreateCardSet(evt.id)
                         findNavController().navigate(action)
                     }
+                    is CardSetsEvents.NavigateCardSetDetail -> {
+                        val action = CardSetsFragmentDirections.actionMainToCardSetDetail(evt.id, evt.title)
+                        findNavController().navigate(action)
+                    }
                 }
             }
         })

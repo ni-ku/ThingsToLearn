@@ -1,6 +1,7 @@
 package de.niku.braincards.view.activity_main
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.fragment.app.FragmentManager
 import de.niku.braincards.BR
 import de.niku.braincards.R
@@ -18,6 +19,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun getLayoutResId() = R.layout.activity_main
     override fun getViewBindingId() = BR.viewmodel
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
+    }
 
     /**
      *  Hand back a Bundle as result to previous Fragment

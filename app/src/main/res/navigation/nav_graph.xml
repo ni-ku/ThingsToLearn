@@ -6,11 +6,11 @@
             app:startDestination="@id/main_fragment">
 
   <fragment
-    android:id="@+id/main_fragment"
-    android:name="de.niku.braincards.view.fragment_card_sets.CardSetsFragment"
-    android:label="@string/card_sets"
-    tools:layout="@layout/fragment_card_sets"
-    >
+      android:id="@+id/main_fragment"
+      android:name="de.niku.braincards.view.fragment_card_sets.CardSetsFragment"
+      android:label="@string/card_sets"
+      tools:layout="@layout/fragment_card_sets"
+  >
     <action android:id="@+id/action_main_to_create_card_set"
             app:destination="@id/card_set_create_fragment"
             app:enterAnim="@anim/in_bottom"
@@ -18,22 +18,38 @@
             app:popEnterAnim="@anim/stay_in_position"
             app:popExitAnim="@anim/out_bottom"
     >
-      <argument android:name="cardSetId"
-                android:defaultValue="0L"
-                app:argType="long"
-                />
+    </action>
+    <action android:id="@+id/action_main_to_card_set_detail"
+            app:destination="@id/card_set_detail_fragment"
+            app:enterAnim="@anim/in_bottom"
+            app:exitAnim="@anim/stay_in_position"
+            app:popEnterAnim="@anim/stay_in_position"
+            app:popExitAnim="@anim/out_bottom"
+    >
     </action>
   </fragment>
 
   <fragment
-          android:id="@+id/card_set_create_fragment"
-          android:name="de.niku.braincards.view.fragment_card_set_create.CardSetCreateFragment"
-          android:label="@string/create_card_set"
-          tools:layout="@layout/fragment_card_set_create"
-          >
+      android:id="@+id/card_set_create_fragment"
+      android:name="de.niku.braincards.view.fragment_card_set_create.CardSetCreateFragment"
+      android:label="@string/create_card_set"
+      tools:layout="@layout/fragment_card_set_create"
+  >
     <argument android:name="cardSetId"
               android:defaultValue="0L"
               app:argType="long"/>
+  </fragment>
+
+  <fragment
+      android:id="@+id/card_set_detail_fragment"
+      android:name="de.niku.braincards.view.fragment_card_set_detail.CardSetDetailFragment"
+      android:label="{title}"
+      tools:layout="@layout/fragment_card_set_detail">
+    <argument android:name="cardSetId"
+              android:defaultValue="0L"
+              app:argType="long"/>
+    <argument android:name="title"
+              app:argType="string"/>
   </fragment>
 
 </navigation>

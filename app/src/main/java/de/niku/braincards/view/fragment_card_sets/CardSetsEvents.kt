@@ -5,4 +5,5 @@ sealed class CardSetsEvents() {
     class NavigateEditCardSet(val id: Long): CardSetsEvents()
     class ShowConfirmDeleteDialog(): CardSetsEvents()
     class ShowCardSetDeleteError(): CardSetsEvents()
+    class NavigateCardSetDetail(val id: Long, val title: String): CardSetsEvents()
 }
