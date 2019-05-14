@@ -12,7 +12,12 @@
     tools:layout="@layout/fragment_card_sets"
     >
     <action android:id="@+id/action_main_to_create_card_set"
-            app:destination="@id/card_set_create_fragment">
+            app:destination="@id/card_set_create_fragment"
+            app:enterAnim="@anim/in_bottom"
+            app:exitAnim="@anim/stay_in_position"
+            app:popEnterAnim="@anim/stay_in_position"
+            app:popExitAnim="@anim/out_bottom"
+    >
       <argument android:name="cardSetId"
                 android:defaultValue="0L"
                 app:argType="long"
