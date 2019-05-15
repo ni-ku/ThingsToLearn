@@ -50,6 +50,27 @@
               app:argType="long"/>
     <argument android:name="title"
               app:argType="string"/>
+
+    <action android:id="@+id/action_card_set_detail_to_view_cards"
+            app:destination="@id/view_cards_fragment"
+            app:enterAnim="@anim/in_bottom"
+            app:exitAnim="@anim/stay_in_position"
+            app:popEnterAnim="@anim/stay_in_position"
+            app:popExitAnim="@anim/out_bottom"
+    >
+    </action>
+  </fragment>
+
+  <fragment
+      android:id="@+id/view_cards_fragment"
+      android:name="de.niku.braincards.view.fragment_card_set_view_cards.ViewCardsFragment"
+      android:label="{title}"
+      tools:layout="@layout/fragment_view_cards">
+    <argument android:name="cardSetId"
+              android:defaultValue="0L"
+              app:argType="long"/>
+    <argument android:name="title"
+              app:argType="string"/>
   </fragment>
 
 </navigation>

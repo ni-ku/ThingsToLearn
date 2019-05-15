@@ -7,6 +7,8 @@ import de.niku.braincards.view.fragment_card_set_create.CardSetCreateFragment
 import de.niku.braincards.view.fragment_card_set_create.CardSetCreateModule
 import de.niku.braincards.view.fragment_card_set_detail.CardSetDetailFragment
 import de.niku.braincards.view.fragment_card_set_detail.CardSetDetailModule
+import de.niku.braincards.view.fragment_card_set_view_cards.ViewCardsFragment
+import de.niku.braincards.view.fragment_card_set_view_cards.ViewCardsModule
 import de.niku.braincards.view.fragment_card_sets.CardSetsFragment
 import de.niku.braincards.view.fragment_card_sets.CardSetsModule
 
@@ -27,5 +29,10 @@ abstract class FragmentModule {
         CardSetDetailModule::class
     ])
     abstract fun contributeCardSetDetailFragment(): CardSetDetailFragment
+
+    @ContributesAndroidInjector(modules = [
+        ViewCardsModule::class
+    ])
+    abstract fun contributeViewCardsFragment(): ViewCardsFragment
 
 }

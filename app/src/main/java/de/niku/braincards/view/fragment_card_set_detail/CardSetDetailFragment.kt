@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.iterator
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import de.niku.braincards.BR
 
@@ -75,7 +76,8 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
                         Toast.makeText(context, "Todo: Start learning", Toast.LENGTH_SHORT).show()
                     }
                     is CardSetDetailEvents.NavigateToViewCards -> {
-                        Toast.makeText(context, "Todo: Nav to view cards", Toast.LENGTH_SHORT).show()
+                        val action = CardSetDetailFragmentDirections.actionCardSetDetailToViewCards(evt.id, evt.title)
+                        findNavController().navigate(action)
                     }
                 }
             }
