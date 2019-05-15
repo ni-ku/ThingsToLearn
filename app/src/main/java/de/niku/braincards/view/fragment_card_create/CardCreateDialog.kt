@@ -31,7 +31,7 @@ class CardCreateDialog(
     }
 
     override fun getTitleMessage(): Int {
-        return R.string.create_question_dialog_title
+        return R.string.create_card
     }
 
     override fun getPositiveButtonMessage(): Int {

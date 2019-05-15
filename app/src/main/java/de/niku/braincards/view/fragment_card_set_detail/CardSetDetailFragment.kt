@@ -2,6 +2,8 @@ package de.niku.braincards.view.fragment_card_set_detail
 
 import android.os.Build
 import android.os.Bundle
+import android.os.ResultReceiver
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,6 +18,8 @@ import de.niku.braincards.BR
 import de.niku.braincards.R
 import de.niku.braincards.common.base.BaseFragment
 import de.niku.braincards.databinding.FragmentCardSetDetailBinding
+import de.niku.braincards.view.dialog_start_learning.StartLearningDialog
+import de.niku.braincards.view.dialog_start_learning.StartLearningResultData
 
 class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSetDetailViewModel>() {
 
@@ -73,11 +77,19 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
             run {
                 when (evt) {
                     is CardSetDetailEvents.ShowStartLearningDialog -> {
-                        Toast.makeText(context, "Todo: Start learning", Toast.LENGTH_SHORT).show()
+                        var dialog = StartLearningDialog(object: StartLearningDialog.ResultReceiver {
+                            override fun onStartLearningDialogResult(result: StartLearningResultData) {
+                                mViewModel.onStartLearningResult(result)
+                            }
+                        })
+                        dialog.show(fragmentManager!!, StartLearningDialog.TAG)
                     }
                     is CardSetDetailEvents.NavigateToViewCards -> {
                         val action = CardSetDetailFragmentDirections.actionCardSetDetailToViewCards(evt.id, evt.title)
                         findNavController().navigate(action)
+                    }
+                    is CardSetDetailEvents.NavigateToLearnView -> {
+                        Toast.makeText(context, "Nav to learn view", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import de.niku.braincards.view.dialog_question_create.QuestionCreateDialog
 import de.niku.braincards.view.dialog_question_create.QuestionCreateModule
+import de.niku.braincards.view.dialog_start_learning.StartLearningDialog
+import de.niku.braincards.view.dialog_start_learning.StartLearningModule
 import de.niku.braincards.view.fragment_card_create.CardCreateDialog
 import de.niku.braincards.view.fragment_card_create.CardCreateModule
 
@@ -19,4 +21,9 @@ abstract class DialogModule {
         CardCreateModule::class
     ])
     abstract fun contributeCardCreateDialog(): CardCreateDialog
+
+    @ContributesAndroidInjector(modules = [
+        StartLearningModule::class
+    ])
+    abstract fun contributeStartLearningDialog(): StartLearningDialog
 }

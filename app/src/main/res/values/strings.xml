@@ -37,6 +37,11 @@
   <string name="start_lerning">Start learning</string>
   <string name="view_cards">View cards</string>
 
+  <!-- Start Learning Dialog -->
+  <string name="learn_normal_mode">Learn</string>
+  <string name="learn_quiz_mode">Quiz</string>
+  <string name="start">Start</string>
+
 
   <!-- Dialogs -->
   <string name="dialog_delete_card_set_error_title">Error</string>

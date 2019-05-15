@@ -16,7 +16,7 @@ class DbModule {
     @Provides
     @Singleton
     fun provideAppDatabase(context: Context): BrainCardsDb? {
-        return BrainCardsDb.getAppDb(context)
+        return BrainCardsDb.getInstance(context)
     }
 
     @Provides

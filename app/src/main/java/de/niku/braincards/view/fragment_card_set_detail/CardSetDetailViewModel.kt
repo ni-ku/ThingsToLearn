@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import de.niku.braincards.common.base.BaseViewModel
 import de.niku.braincards.data.repo.card_set.CardSetRepo
 import de.niku.braincards.model.CardSet
+import de.niku.braincards.view.dialog_start_learning.StartLearningResultData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -43,6 +44,10 @@ class CardSetDetailViewModel(
 
     fun onStartLearningClick() {
         mEvents.value = CardSetDetailEvents.ShowStartLearningDialog()
+    }
+
+    fun onStartLearningResult(resultData: StartLearningResultData) {
+        mEvents.value = CardSetDetailEvents.NavigateToLearnView(resultData)
     }
 
     fun onViewCardsClick() {
