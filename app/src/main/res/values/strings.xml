@@ -10,6 +10,7 @@
   <string name="delete">Delete</string>
   <string name="yes_delete">Yes, delete</string>
   <string name="ok">Ok</string>
+  <string name="next">Next</string>
 
   <!-- CardSets Fragment -->
   <string name="card_sets">CardSets</string>

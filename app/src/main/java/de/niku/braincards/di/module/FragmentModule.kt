@@ -2,11 +2,12 @@ package de.niku.braincards.di.module
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import de.niku.braincards.view.fragment_card_create.CardCreateModule
 import de.niku.braincards.view.fragment_card_set_create.CardSetCreateFragment
 import de.niku.braincards.view.fragment_card_set_create.CardSetCreateModule
 import de.niku.braincards.view.fragment_card_set_detail.CardSetDetailFragment
 import de.niku.braincards.view.fragment_card_set_detail.CardSetDetailModule
+import de.niku.braincards.view.fragment_card_set_learn.CardSetLearnFragment
+import de.niku.braincards.view.fragment_card_set_learn.CardSetLearnModule
 import de.niku.braincards.view.fragment_card_set_view_cards.ViewCardsFragment
 import de.niku.braincards.view.fragment_card_set_view_cards.ViewCardsModule
 import de.niku.braincards.view.fragment_card_sets.CardSetsFragment
@@ -34,5 +35,10 @@ abstract class FragmentModule {
         ViewCardsModule::class
     ])
     abstract fun contributeViewCardsFragment(): ViewCardsFragment
+
+    @ContributesAndroidInjector(modules = [
+        CardSetLearnModule::class
+    ])
+    abstract fun contributeCardSetLearnFragment(): CardSetLearnFragment
 
 }

@@ -47,7 +47,12 @@ class CardSetDetailViewModel(
     }
 
     fun onStartLearningResult(resultData: StartLearningResultData) {
-        mEvents.value = CardSetDetailEvents.NavigateToLearnView(resultData)
+        var params = StartLearningParams(
+            cardSet.value?.id!!,
+            cardSet.value?.name!!,
+            resultData.learnMode
+        )
+        mEvents.value = CardSetDetailEvents.NavigateToLearnView(params)
     }
 
     fun onViewCardsClick() {

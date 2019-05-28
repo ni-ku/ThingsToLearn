@@ -56,9 +56,13 @@
             app:enterAnim="@anim/in_bottom"
             app:exitAnim="@anim/stay_in_position"
             app:popEnterAnim="@anim/stay_in_position"
-            app:popExitAnim="@anim/out_bottom"
-    >
-    </action>
+            app:popExitAnim="@anim/out_bottom"/>
+    <action android:id="@+id/action_card_set_detail_to_learn_fragment"
+            app:destination="@id/card_set_learn_fragment"
+            app:enterAnim="@anim/in_bottom"
+            app:exitAnim="@anim/stay_in_position"
+            app:popEnterAnim="@anim/stay_in_position"
+            app:popExitAnim="@anim/out_bottom"/>
   </fragment>
 
   <fragment
@@ -71,6 +75,21 @@
               app:argType="long"/>
     <argument android:name="title"
               app:argType="string"/>
+  </fragment>
+
+  <fragment
+    android:id="@+id/card_set_learn_fragment"
+    android:name="de.niku.braincards.view.fragment_card_set_learn.CardSetLearnFragment"
+    android:label="{title}"
+    tools:layout="@layout/fragment_card_set_learn">
+    <argument android:name="cardSetId"
+              android:defaultValue="0L"
+              app:argType="long"/>
+    <argument android:name="title"
+              app:argType="string"/>
+    <argument android:name="mode"
+              android:defaultValue="10"
+              app:argType="integer"/>
   </fragment>
 
 </navigation>

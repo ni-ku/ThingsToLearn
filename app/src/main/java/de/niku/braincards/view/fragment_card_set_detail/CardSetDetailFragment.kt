@@ -89,7 +89,12 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
                         findNavController().navigate(action)
                     }
                     is CardSetDetailEvents.NavigateToLearnView -> {
-                        Toast.makeText(context, "Nav to learn view", Toast.LENGTH_SHORT).show()
+                        val action = CardSetDetailFragmentDirections.actionCardSetDetailToLearnFragment(
+                            evt.params.cardSetId,
+                            evt.params.cardSetName,
+                            evt.params.mode
+                        )
+                        findNavController().navigate(action)
                     }
                 }
             }
