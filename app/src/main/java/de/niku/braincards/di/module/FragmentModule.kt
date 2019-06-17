@@ -12,6 +12,8 @@ import de.niku.braincards.view.fragment_card_set_view_cards.ViewCardsFragment
 import de.niku.braincards.view.fragment_card_set_view_cards.ViewCardsModule
 import de.niku.braincards.view.fragment_card_sets.CardSetsFragment
 import de.niku.braincards.view.fragment_card_sets.CardSetsModule
+import de.niku.braincards.view.fragment_quiz.QuizFragment
+import de.niku.braincards.view.fragment_quiz.QuizModule
 
 @Module
 abstract class FragmentModule {
@@ -40,5 +42,10 @@ abstract class FragmentModule {
         CardSetLearnModule::class
     ])
     abstract fun contributeCardSetLearnFragment(): CardSetLearnFragment
+
+    @ContributesAndroidInjector(modules = [
+        QuizModule::class
+    ])
+    abstract fun contributeQuizFragment(): QuizFragment
 
 }

@@ -96,6 +96,10 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
                         )
                         findNavController().navigate(action)
                     }
+                    is CardSetDetailEvents.NavigateToQuizView -> {
+                        val action = CardSetDetailFragmentDirections.actionCardSetDetailToQuizFragment(evt.id, evt.title)
+                        findNavController().navigate(action)
+                    }
                 }
             }
         })

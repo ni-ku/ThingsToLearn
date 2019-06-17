@@ -1,7 +1,9 @@
 package de.niku.braincards.view.fragment_card_set_detail
 
 import android.annotation.SuppressLint
+import android.provider.SyncStateContract
 import androidx.lifecycle.MutableLiveData
+import de.niku.braincards.Constants
 import de.niku.braincards.common.base.BaseViewModel
 import de.niku.braincards.data.repo.card_set.CardSetRepo
 import de.niku.braincards.model.CardSet
@@ -47,12 +49,16 @@ class CardSetDetailViewModel(
     }
 
     fun onStartLearningResult(resultData: StartLearningResultData) {
-        var params = StartLearningParams(
-            cardSet.value?.id!!,
-            cardSet.value?.name!!,
-            resultData.learnMode
-        )
-        mEvents.value = CardSetDetailEvents.NavigateToLearnView(params)
+        if (resultData.learnMode == Constants.LEARN_MODE_NORMAL) {
+            var params = StartLearningParams(
+                cardSet.value?.id!!,
+                cardSet.value?.name!!,
+                resultData.learnMode
+            )
+            mEvents.value = CardSetDetailEvents.NavigateToLearnView(params)
+        } else if (resultData.learnMode == Constants.LEARN_MODE_QUIZ) {
+            mEvents.value = CardSetDetailEvents.NavigateToQuizView(cardSet.value?.id!!, cardSet.value?.name!!)
+        }
     }
 
     fun onViewCardsClick() {

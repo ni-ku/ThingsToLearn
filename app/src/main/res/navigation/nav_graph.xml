@@ -63,6 +63,12 @@
             app:exitAnim="@anim/stay_in_position"
             app:popEnterAnim="@anim/stay_in_position"
             app:popExitAnim="@anim/out_bottom"/>
+    <action android:id="@+id/action_card_set_detail_to_quiz_fragment"
+            app:destination="@id/quiz_fragment"
+            app:enterAnim="@anim/in_bottom"
+            app:exitAnim="@anim/stay_in_position"
+            app:popEnterAnim="@anim/stay_in_position"
+            app:popExitAnim="@anim/out_bottom"/>
   </fragment>
 
   <fragment
@@ -90,6 +96,18 @@
     <argument android:name="mode"
               android:defaultValue="10"
               app:argType="integer"/>
+  </fragment>
+
+  <fragment
+    android:id="@+id/quiz_fragment"
+    android:name="de.niku.braincards.view.fragment_quiz.QuizFragment"
+    android:label="{title}"
+    tools:layout="@layout/fragment_quiz">
+    <argument android:name="cardSetId"
+              android:defaultValue="0L"
+              app:argType="long"/>
+    <argument android:name="title"
+              app:argType="string"/>
   </fragment>
 
 </navigation>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragment_quiz.QuizFragment">
+
+  <data>
+    <variable name="viewmodel"
+              type="de.niku.braincards.view.fragment_quiz.QuizViewModel"/>
+    <import type="de.niku.braincards.view.fragment_quiz.QuizViewModel"/>
+  </data>
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/white"
+  >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/spacing_normal"
+        android:clipToPadding="false"
+    >
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/front"
+          android:layout_width="match_parent"
+          android:layout_height="160dp"
+          app:cardElevation="2dp"
+          app:cardCornerRadius="2dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+      >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_normal"
+        >
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:text="@{viewmodel.vdQuestion}"
+              tools:text="Question"
+          />
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/cv_option_3"
+          android:layout_width="0dp"
+          android:layout_height="100dp"
+          app:cardElevation="2dp"
+          app:cardCornerRadius="2dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@+id/cv_option_4"
+          app:layout_constraintBottom_toTopOf="@+id/progressbar_time_limit"
+          android:layout_marginEnd="@dimen/spacing_small"
+      >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_normal"
+            android:clickable="true"
+            android:onClick="@{(v) -> viewmodel.onOptionSelected(viewmodel.OPTION_3)}"
+            android:background="@{viewmodel.vdOption3Color}"
+        >
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:text="@{viewmodel.vdOption3Text}"
+              tools:text="Front side of a card"
+          />
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/cv_option_4"
+          android:layout_width="0dp"
+          android:layout_height="100dp"
+          app:cardElevation="2dp"
+          app:cardCornerRadius="2dp"
+          app:layout_constraintStart_toEndOf="@+id/cv_option_3"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintBottom_toBottomOf="@+id/cv_option_3"
+          android:layout_marginStart="@dimen/spacing_small"
+      >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_normal"
+            android:clickable="true"
+            android:onClick="@{(v) -> viewmodel.onOptionSelected(viewmodel.OPTION_4)}"
+            android:background="@{viewmodel.vdOption4Color}"
+        >
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:text="@{viewmodel.vdOption4Text}"
+              tools:text="Front side of a card"
+          />
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/cv_option_1"
+          android:layout_width="0dp"
+          android:layout_height="100dp"
+          app:cardElevation="2dp"
+          app:cardCornerRadius="2dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/cv_option_2"
+          app:layout_constraintBottom_toTopOf="@+id/cv_option_3"
+          android:layout_marginBottom="@dimen/spacing_normal"
+          android:layout_marginEnd="@dimen/spacing_small"
+      >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_normal"
+            android:clickable="true"
+            android:onClick="@{(v) -> viewmodel.onOptionSelected(viewmodel.OPTION_1)}"
+            android:background="@{viewmodel.vdOption1Color}"
+        >
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:text="@{viewmodel.vdOption1Text}"
+              tools:text="Front side of a card"
+          />
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/cv_option_2"
+          android:layout_width="0dp"
+          android:layout_height="100dp"
+          app:cardElevation="2dp"
+          app:cardCornerRadius="2dp"
+          app:layout_constraintStart_toEndOf="@+id/cv_option_1"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@+id/cv_option_1"
+          android:layout_marginStart="@dimen/spacing_small"
+      >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_normal"
+            android:clickable="true"
+            android:onClick="@{(v) -> viewmodel.onOptionSelected(viewmodel.OPTION_2)}"
+            android:background="@{viewmodel.vdOption2Color}"
+        >
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:text="@{viewmodel.vdOption2Text}"
+              tools:text="Front side of a card"
+          />
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.core.widget.ContentLoadingProgressBar
+          android:id="@+id/progressbar_time_limit"
+          style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+          android:layout_width="0dp"
+          android:layout_height="40dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"
+          tools:progress="20"
+      />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
