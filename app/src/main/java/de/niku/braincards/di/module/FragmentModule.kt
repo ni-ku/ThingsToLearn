@@ -14,6 +14,8 @@ import de.niku.braincards.view.fragment_card_sets.CardSetsFragment
 import de.niku.braincards.view.fragment_card_sets.CardSetsModule
 import de.niku.braincards.view.fragment_quiz.QuizFragment
 import de.niku.braincards.view.fragment_quiz.QuizModule
+import de.niku.braincards.view.fragment_settings.SettingsFragment
+import de.niku.braincards.view.fragment_settings.SettingsModule
 
 @Module
 abstract class FragmentModule {
@@ -47,5 +49,10 @@ abstract class FragmentModule {
         QuizModule::class
     ])
     abstract fun contributeQuizFragment(): QuizFragment
+
+    @ContributesAndroidInjector(modules = [
+        SettingsModule::class
+    ])
+    abstract fun contributeSettingsFragment(): SettingsFragment
 
 }

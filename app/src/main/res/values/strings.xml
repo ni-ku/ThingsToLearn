@@ -11,10 +11,13 @@
   <string name="yes_delete">Yes, delete</string>
   <string name="ok">Ok</string>
   <string name="next">Next</string>
+  <string name="settings">Einstellungen</string>
 
   <!-- CardSets Fragment -->
   <string name="card_sets">CardSets</string>
   <string name="card_sets_list_empty">You haven\'t created any CardSets yet.</string>
+  <string name="data_import">Import</string>
+  <string name="data_export">Export</string>
 
   <!-- Create CardSet Fragment -->
   <string name="create_card_set">Create CardSet</string>

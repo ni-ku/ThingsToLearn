@@ -1,7 +1,11 @@
 package de.niku.braincards.view.fragment_card_sets
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +17,8 @@ import de.niku.braincards.common.base.BaseFragment
 import de.niku.braincards.common.dialogs.DecisionDialog
 import de.niku.braincards.common.dialogs.InfoDialog
 import de.niku.braincards.databinding.FragmentCardSetsBinding
+import de.niku.braincards.util.colorMenuItem
+import de.niku.braincards.util.getResColorInt
 
 class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel>() {
 
@@ -26,6 +32,7 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         connectObservables()
 
         if (!this::cardSetAdapter.isInitialized) {
@@ -36,7 +43,26 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
         mDataBinding.rvCardSets.adapter = cardSetAdapter
 
         mViewModel.fetchCardSets()
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.card_sets_menu, menu)
+        colorMenuItem(context!!, menu, getResColorInt(context!!, R.color.white))
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_import -> {
+                Toast.makeText(context, "Import Data", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.menu_export -> {
+                Toast.makeText(context, "Export Data", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

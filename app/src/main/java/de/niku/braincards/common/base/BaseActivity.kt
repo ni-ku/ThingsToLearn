@@ -47,7 +47,7 @@ abstract class BaseActivity<D : ViewDataBinding, V : ViewModel> : AppCompatActiv
     fun setupToolbar() {
         setSupportActionBar(mToolbar)
         setupActionBarWithNavController(mNavController)
-        //NavigationUI.setupWithNavController(mToolbar, mNavController)
+        NavigationUI.setupWithNavController(mToolbar, mNavController, mDataBinding.root.drawer_layout)
     }
 
     override fun onSupportNavigateUp(): Boolean {

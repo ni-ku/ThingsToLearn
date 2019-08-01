@@ -2,7 +2,14 @@ package de.niku.braincards.view.activity_main
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.ui.AppBarConfiguration
+import com.google.android.material.navigation.NavigationView
 import de.niku.braincards.BR
 import de.niku.braincards.R
 import de.niku.braincards.common.base.BaseActivity
@@ -10,11 +17,24 @@ import de.niku.braincards.common.navigation.NavigationResult
 import de.niku.braincards.databinding.ActivityMainBinding
 import kotlin.properties.Delegates
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
+    NavController.OnDestinationChangedListener,
+    NavigationView.OnNavigationItemSelectedListener {
+
+    /**
+     * Set of views where the navigation drawer
+     * is accessible from
+     */
+    val viewsWithDrawerMenu: Array<String> = arrayOf(
+        "CardSets"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
+        AppBarConfiguration(mNavController.graph, mDataBinding.drawerLayout)
+        mNavController.addOnDestinationChangedListener(this)
+        mDataBinding.navigationView.setNavigationItemSelectedListener(this)
     }
 
     override fun getLayoutResId() = R.layout.activity_main
@@ -40,6 +60,36 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
         childFragmentManager?.addOnBackStackChangedListener(backStackListener)
         mNavController.popBackStack()
+    }
+
+    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+        // whenever the view is changed lock/unlock the navigation drawer.
+        // Navigation drawer should not be accessible from every view.
+        if (viewsWithDrawerMenu.contains(destination.label)) {
+            unlockNavDrawer()
+        } else {
+            lockNavDrawer()
+        }
+    }
+
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        mDataBinding.drawerLayout.closeDrawer(GravityCompat.START)
+        when (menuItem.itemId) {
+            R.id.menu_settings -> {
+                mNavController.navigate(R.id.settings_fragment)
+                return true
+            }
+        }
+
+        return false
+    }
+
+    fun lockNavDrawer() {
+        mDataBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+
+    fun unlockNavDrawer() {
+        mDataBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
 }
