@@ -7,6 +7,8 @@ import de.niku.braincards.common.base.BaseViewModel
 import de.niku.braincards.common.base.ViewState
 import de.niku.braincards.data.repo.card_set.CardSetRepo
 import de.niku.braincards.model.CardSet
+import de.niku.braincards.util.hasExternalStorage
+import de.niku.braincards.util.isExternalStorageWriteable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.lang.NullPointerException
@@ -86,5 +88,15 @@ class CardSetsViewModel(
             mCardSets.value?.get(position)?.id!!,
             mCardSets.value?.get(position)?.name!!
         )
+    }
+
+    fun exportCardSets(cardSets: List<CardSet>) {
+        if (cardSets.isEmpty()) {
+            return
+        }
+
+        if (hasExternalStorage() && isExternalStorageWriteable()) {
+
+        }
     }
 }
