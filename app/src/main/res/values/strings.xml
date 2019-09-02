@@ -12,6 +12,8 @@
   <string name="ok">Ok</string>
   <string name="next">Next</string>
   <string name="settings">Einstellungen</string>
+  <string name="n_selected_items">%1$d selected Items</string>
+  <string name="select_all">Select all</string>
 
   <!-- CardSets Fragment -->
   <string name="card_sets">CardSets</string>

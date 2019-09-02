@@ -48,6 +48,7 @@ ext {
 
     rxjava2_version = '2.2.2'
     rxandroid_version = '2.1.0'
+    rxpermissions_version = '0.7.0'
 
     dagger_version = '2.21'
 }
