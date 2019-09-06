@@ -144,6 +144,32 @@ class CardSetRepoImpl(
         }
     }
 
+    override fun createCardSets(list: List<CardSet>): Observable<Boolean> {
+        return Observable.create<Boolean> {
+            run {
+                for (cs in list) {
+                    val cardSetTbl = TblCardSet(null, cs.name, cs.cards.size)
+                    val cardSetId = cardSetDao.insert(cardSetTbl)
+
+                    if (cs.cards != null) {
+                        for (card in cs.cards) {
+                            var tblCard = TblCard(null, card.front, card.back, cardSetId)
+                            cardDao.insert(tblCard)
+                        }
+                    }
+
+                    if (cs.questions != null) {
+                        for (question in cs.questions) {
+                            var tblQuestion = TblQuestion(null, question.text, cardSetId)
+                            questionDao.insert(tblQuestion)
+                        }
+                    }
+                }
+                it.onNext(true)
+            }
+        }
+    }
+
     override fun deleteCardSet(id: Long): Observable<Boolean> {
         return Observable.create<Boolean> {
             run {

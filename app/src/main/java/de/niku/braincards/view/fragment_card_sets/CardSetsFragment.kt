@@ -2,6 +2,9 @@ package de.niku.braincards.view.fragment_card_sets
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -12,6 +15,8 @@ import com.vanniktech.rxpermission.Permission
 import com.vanniktech.rxpermission.RealRxPermission
 import de.niku.braincards.BR
 import de.niku.braincards.Constants
+import de.niku.braincards.Constants.Companion.EXPORT_FILE_EXTENSION
+import de.niku.braincards.Constants.Companion.RQ_SELECT_FILE
 
 import de.niku.braincards.R
 import de.niku.braincards.common.base.BaseFragment
@@ -21,6 +26,14 @@ import de.niku.braincards.databinding.FragmentCardSetsBinding
 import de.niku.braincards.util.colorMenuItem
 import de.niku.braincards.util.getResColorInt
 import de.niku.braincards.view.activity_main.MainActivity
+import android.content.Context
+import android.util.Log
+import com.google.gson.Gson
+import de.niku.braincards.model.CardSet
+import java.io.IOException
+import java.nio.charset.Charset
+import kotlin.text.Charsets.UTF_8
+
 
 class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel>(),
     ActionMode.Callback {
@@ -52,6 +65,17 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
         mViewModel.fetchCardSets()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == RQ_SELECT_FILE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val uri: Uri = data!!.data
+                val json = loadJSONFromUri(uri, context!!)
+                mViewModel.importCardSetsFromJson(json!!)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.card_sets_menu, menu)
         colorMenuItem(context!!, menu, getResColorInt(context!!, R.color.white))
@@ -61,7 +85,7 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_import -> {
-                Toast.makeText(context, "Import Data", Toast.LENGTH_SHORT).show()
+                checkSorageIOPermissions()
                 return true
             }
             R.id.menu_export -> {
@@ -138,6 +162,10 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
                         val action = CardSetsFragmentDirections.actionMainToCardSetDetail(evt.id, evt.title)
                         findNavController().navigate(action)
                     }
+                    is CardSetsEvents.ShowImportSuccess -> {
+                        Toast.makeText(context, "Import Successful", Toast.LENGTH_SHORT).show()
+                        mViewModel.fetchCardSets()
+                    }
                 }
             }
         })
@@ -192,27 +220,67 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
 
     @SuppressLint("CheckResult")
     fun checkSorageIOPermissions() {
-        RealRxPermission.getInstance(context)
-            .requestEach(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ).subscribe {
-                if (it.name().equals(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    && it.state() == Permission.State.GRANTED) {
-                    readExtStoragePermGranted = true
-                }
-                if (it.name().equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    && it.state() == Permission.State.GRANTED) {
-                    writeExtStoragePermGranted = true
-                }
+        if (!readExtStoragePermGranted && !writeExtStoragePermGranted) {
+            RealRxPermission.getInstance(context)
+                .requestEach(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).subscribe {
+                    if (it.name().equals(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        && it.state() == Permission.State.GRANTED
+                    ) {
+                        readExtStoragePermGranted = true
+                    }
+                    if (it.name().equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        && it.state() == Permission.State.GRANTED
+                    ) {
+                        writeExtStoragePermGranted = true
+                    }
 
-                if (readExtStoragePermGranted && writeExtStoragePermGranted) {
-                    doExport()
+                    if (readExtStoragePermGranted && writeExtStoragePermGranted) {
+                        //doExport()
+                        doFileSelection()
+                    }
                 }
-            }
+        } else {
+            doFileSelection()
+        }
     }
 
     fun doExport() {
         mViewModel.exportCardSets(cardSetAdapter.getSelectedItems())
+    }
+
+    fun doFileSelection() {
+        var intent: Intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("*/*")
+        //intent.addCategory(Intent.CATEGORY_OPENABLE)
+
+        startActivityForResult(Intent.createChooser(intent, "Select File"), RQ_SELECT_FILE)
+    }
+
+    fun loadJSONFromUri(uri: Uri, context: Context): String? {
+        var json: String? = null
+        try {
+
+            val inputStr = context.contentResolver.openInputStream(uri)
+
+            val size = inputStr.available()
+
+            val buffer = ByteArray(size)
+
+            inputStr.read(buffer)
+
+            inputStr.close()
+
+            json = String(buffer, UTF_8)
+
+
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return null
+        }
+
+        return json
     }
 }
