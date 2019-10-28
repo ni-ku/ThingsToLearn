@@ -54,16 +54,36 @@
         tools:text="32"
     />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_menu"
-        android:layout_width="@dimen/icon_click_area"
-        android:layout_height="@dimen/icon_click_area"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_more_vert_black_24dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-    />
+        >
+
+      <androidx.appcompat.widget.AppCompatImageButton
+          android:id="@+id/btn_menu"
+          android:layout_width="@dimen/icon_click_area"
+          android:layout_height="@dimen/icon_click_area"
+          android:src="@drawable/ic_more_vert_black_24dp"
+          android:background="?android:selectableItemBackgroundBorderless"
+          android:layout_gravity="center"
+          />
+
+      <androidx.appcompat.widget.AppCompatCheckBox
+          android:id="@+id/cb_selected"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:visibility="gone"
+          android:clickable="false"
+          android:focusable="false"
+          android:focusableInTouchMode="false"
+          />
+
+    </FrameLayout>
+
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

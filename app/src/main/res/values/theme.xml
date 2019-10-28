@@ -10,6 +10,11 @@
     <item name="android:windowTranslucentStatus">true</item>
     <!-- sharedElement transitions -->
     <item name="android:windowContentTransitions">true</item>
+
+    <!-- show actionMode on top of toolbar -->
+    <item name="android:windowActionModeOverlay">true</item>
+    <item name="windowActionModeOverlay">true</item>
+
     <!-- global widget styles -->
     <item name="android:buttonStyle">@style/App.Button</item>
     <item name="materialButtonStyle">@style/App.Button</item>

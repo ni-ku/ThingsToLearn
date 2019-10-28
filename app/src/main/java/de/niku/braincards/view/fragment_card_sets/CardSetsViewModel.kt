@@ -3,10 +3,13 @@ package de.niku.braincards.view.fragment_card_sets
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import de.niku.braincards.common.base.BaseViewModel
 import de.niku.braincards.common.base.ViewState
 import de.niku.braincards.data.repo.card_set.CardSetRepo
 import de.niku.braincards.model.CardSet
+import de.niku.braincards.util.hasExternalStorage
+import de.niku.braincards.util.isExternalStorageWriteable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.lang.NullPointerException
@@ -86,5 +89,36 @@ class CardSetsViewModel(
             mCardSets.value?.get(position)?.id!!,
             mCardSets.value?.get(position)?.name!!
         )
+    }
+
+    fun exportCardSets(cardSets: List<CardSet>) {
+        if (cardSets.isEmpty()) {
+            return
+        }
+
+        if (hasExternalStorage() && isExternalStorageWriteable()) {
+
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    fun importCardSetsFromJson(json: String) {
+
+        var gson = Gson()
+        var cardsets: List<CardSet> = gson.fromJson(json, Array<CardSet>::class.java).toList()
+
+        cardSetRepo.createCardSets(cardsets)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({ cardSet ->
+                run {
+                    mEvents.value = CardSetsEvents.ShowImportSuccess()
+                }
+
+            }, {error ->
+                run {
+                    //mEvents.value = CardSetsEvents.ShowImportSuccess()
+                }
+            })
     }
 }
