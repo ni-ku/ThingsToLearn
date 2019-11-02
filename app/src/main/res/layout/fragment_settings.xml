@@ -7,7 +7,7 @@
   <data>
     <variable
         name="viewmodel"
-        type="de.niku.braincards.view.fragment_settings.SettingsViewModel"/>
+        type="de.niku.ttl.view.fragment_settings.SettingsViewModel"/>
   </data>
 
 

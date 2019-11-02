@@ -7,7 +7,7 @@
 
   <fragment
       android:id="@+id/main_fragment"
-      android:name="de.niku.braincards.view.fragment_card_sets.CardSetsFragment"
+      android:name="de.niku.ttl.view.fragment_card_sets.CardSetsFragment"
       android:label="@string/card_sets"
       tools:layout="@layout/fragment_card_sets"
   >
@@ -31,7 +31,7 @@
 
   <fragment
       android:id="@+id/card_set_create_fragment"
-      android:name="de.niku.braincards.view.fragment_card_set_create.CardSetCreateFragment"
+      android:name="de.niku.ttl.view.fragment_card_set_create.CardSetCreateFragment"
       android:label="@string/create_card_set"
       tools:layout="@layout/fragment_card_set_create"
   >
@@ -42,7 +42,7 @@
 
   <fragment
       android:id="@+id/card_set_detail_fragment"
-      android:name="de.niku.braincards.view.fragment_card_set_detail.CardSetDetailFragment"
+      android:name="de.niku.ttl.view.fragment_card_set_detail.CardSetDetailFragment"
       android:label="{title}"
       tools:layout="@layout/fragment_card_set_detail">
     <argument android:name="cardSetId"
@@ -73,7 +73,7 @@
 
   <fragment
       android:id="@+id/view_cards_fragment"
-      android:name="de.niku.braincards.view.fragment_card_set_view_cards.ViewCardsFragment"
+      android:name="de.niku.ttl.view.fragment_card_set_view_cards.ViewCardsFragment"
       android:label="{title}"
       tools:layout="@layout/fragment_view_cards">
     <argument android:name="cardSetId"
@@ -85,7 +85,7 @@
 
   <fragment
     android:id="@+id/card_set_learn_fragment"
-    android:name="de.niku.braincards.view.fragment_card_set_learn.CardSetLearnFragment"
+    android:name="de.niku.ttl.view.fragment_card_set_learn.CardSetLearnFragment"
     android:label="{title}"
     tools:layout="@layout/fragment_card_set_learn">
     <argument android:name="cardSetId"
@@ -100,7 +100,7 @@
 
   <fragment
     android:id="@+id/quiz_fragment"
-    android:name="de.niku.braincards.view.fragment_quiz.QuizFragment"
+    android:name="de.niku.ttl.view.fragment_quiz.QuizFragment"
     android:label="{title}"
     tools:layout="@layout/fragment_quiz">
     <argument android:name="cardSetId"
@@ -112,7 +112,7 @@
 
   <fragment
       android:id="@+id/settings_fragment"
-      android:name="de.niku.braincards.view.fragment_settings.SettingsFragment"
+      android:name="de.niku.ttl.view.fragment_settings.SettingsFragment"
       android:label="@string/settings"
       tools:layout="@layout/fragment_settings"
       >

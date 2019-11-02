@@ -6,7 +6,7 @@
 
   <data>
     <variable name="viewmodel"
-              type="de.niku.braincards.view.fragment_card_set_create.CardSetCreateViewModel"/>
+              type="de.niku.ttl.view.fragment_card_set_create.CardSetCreateViewModel"/>
   </data>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout

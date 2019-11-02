@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Brain Cards</string>
+  <string name="app_name">ThingsToLearn</string>
 
   <!-- General - used in several places -->
   <string name="done">Done</string>

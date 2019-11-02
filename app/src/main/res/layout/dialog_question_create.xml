@@ -6,7 +6,7 @@
 
   <data>
     <variable name="viewmodel"
-              type="de.niku.braincards.view.dialog_question_create.QuestionCreateViewModel"/>
+              type="de.niku.ttl.view.dialog_question_create.QuestionCreateViewModel"/>
   </data>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -5,7 +5,7 @@
 
   <data>
     <variable name="viewmodel"
-              type="de.niku.braincards.view.dialog_start_learning.StartLearningViewModel"/>
+              type="de.niku.ttl.view.dialog_start_learning.StartLearningViewModel"/>
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout

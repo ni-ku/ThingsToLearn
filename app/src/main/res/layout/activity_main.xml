@@ -5,7 +5,7 @@
 
   <data>
     <variable name="viewmodel"
-              type="de.niku.braincards.view.activity_main.MainViewModel"/>
+              type="de.niku.ttl.view.activity_main.MainViewModel"/>
   </data>
 
   <androidx.drawerlayout.widget.DrawerLayout
