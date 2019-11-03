@@ -7,7 +7,6 @@ import de.niku.ttl.data.db.BrainCardsDb
 import de.niku.ttl.data.db.dao.CardDao
 import de.niku.ttl.data.db.dao.CardSetDao
 import de.niku.ttl.data.db.dao.CardSetWithCardsDao
-import de.niku.ttl.data.db.dao.QuestionsDao
 import javax.inject.Singleton
 
 @Module
@@ -35,11 +34,5 @@ class DbModule {
     @Singleton
     fun provideCardSetWithCardsDao(db: BrainCardsDb?): CardSetWithCardsDao {
         return db!!.CardSetWithCardsDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideQuestionsDao(db: BrainCardsDb?): QuestionsDao {
-        return db!!.QuestionsDao()
     }
 }

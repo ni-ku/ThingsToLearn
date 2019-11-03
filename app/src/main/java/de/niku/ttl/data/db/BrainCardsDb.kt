@@ -9,18 +9,15 @@ import de.niku.ttl.common.executors.ioThread
 import de.niku.ttl.data.db.dao.CardDao
 import de.niku.ttl.data.db.dao.CardSetDao
 import de.niku.ttl.data.db.dao.CardSetWithCardsDao
-import de.niku.ttl.data.db.dao.QuestionsDao
 import de.niku.ttl.data.db.entity.CardSetWithCards
 import de.niku.ttl.data.db.entity.TblCard
 import de.niku.ttl.data.db.entity.TblCardSet
-import de.niku.ttl.data.db.entity.TblQuestion
 
 @Database(
     version = 1,
     entities = [
         TblCardSet::class,
-        TblCard::class,
-        TblQuestion::class
+        TblCard::class
     ]
 )
 abstract class BrainCardsDb : RoomDatabase() {
@@ -51,7 +48,6 @@ abstract class BrainCardsDb : RoomDatabase() {
                         ioThread {
                             val cardSetDao = getInstance(context).CardSetDao()
                             val cardDao = getInstance(context).CardDao()
-                            val questionDao = getInstance(context).QuestionsDao()
 
                             var cardSetWithCards = createExampleCardSet()
                             val cardSetId = cardSetDao.insert(cardSetWithCards.cardSet)
@@ -65,15 +61,6 @@ abstract class BrainCardsDb : RoomDatabase() {
                                 )
                                 cardDao.insert(card)
                             }
-
-                            for (q in cardSetWithCards.questions) {
-                                var question = TblQuestion(
-                                    null,
-                                    q.question,
-                                    cardSetId
-                                )
-                                questionDao.insert(question)
-                            }
                         }
                     }
                 })
@@ -83,73 +70,73 @@ abstract class BrainCardsDb : RoomDatabase() {
             var cards: MutableList<TblCard> = mutableListOf()
             var c0 = TblCard(
                 null,
-                "1",
+                "Wer war der 1. Bundespräsident ?",
                 "Theodor Heuss",
                 0
             )
             var c1 = TblCard(
                 null,
-                "2",
+                "Wer war der 2. Bundespräsident ?",
                 "Heinrich Lübcke",
                 0
             )
             var c2 = TblCard(
                 null,
-                "3",
+                "Wer war der 3. Bundespräsident ?",
                 "Gustav Heinemann",
                 0
             )
             var c3 = TblCard(
                 null,
-                "4",
+                "Wer war der 4. Bundespräsident ?",
                 "Walter Scheel",
                 0
             )
             var c4 = TblCard(
                 null,
-                "5",
+                "Wer war der 5. Bundespräsident ?",
                 "Karl Carstens",
                 0
             )
             var c5 = TblCard(
                 null,
-                "6",
+                "Wer war der 6. Bundespräsident ?",
                 "Richard von Weizsäcker",
                 0
             )
             var c6 = TblCard(
                 null,
-                "7",
+                "Wer war der 7. Bundespräsident ?",
                 "Roman Herzog",
                 0
             )
             var c7 = TblCard(
                 null,
-                "8",
+                "Wer war der 8. Bundespräsident ?",
                 "Johannes Rau",
                 0
             )
             var c8 = TblCard(
                 null,
-                "9",
+                "Wer war der 9. Bundespräsident ?",
                 "Horst Köhler",
                 0
             )
             var c9 = TblCard(
                 null,
-                "10",
+                "Wer war der 10. Bundespräsident ?",
                 "Christian Wulff",
                 0
             )
             var c10 = TblCard(
                 null,
-                "11",
+                "Wer war der 11. Bundespräsident ?",
                 "Joachim Gauck",
                 0
             )
             var c11 = TblCard(
                 null,
-                "12",
+                "Wer war der 12. Bundespräsident ?",
                 "Franz-Walter Steinmeier",
                 0
             )
@@ -166,14 +153,6 @@ abstract class BrainCardsDb : RoomDatabase() {
             cards.add(c10)
             cards.add(c11)
 
-            var questions: MutableList<TblQuestion> = mutableListOf()
-            var q0 = TblQuestion(
-                null,
-                "Wer war der {front} deutsche Bundespräsident?",
-                0
-            )
-            questions.add(q0)
-
             var cardSet = TblCardSet(
                 null,
                 "Deutsche Bundespräsidenten",
@@ -181,8 +160,7 @@ abstract class BrainCardsDb : RoomDatabase() {
             )
             var cardSetFull = CardSetWithCards(
                 cardSet,
-                cards,
-                questions
+                cards
             )
 
             return cardSetFull
@@ -191,6 +169,5 @@ abstract class BrainCardsDb : RoomDatabase() {
 
     abstract fun CardSetDao(): CardSetDao
     abstract fun CardDao(): CardDao
-    abstract fun QuestionsDao(): QuestionsDao
     abstract fun CardSetWithCardsDao(): CardSetWithCardsDao
 }

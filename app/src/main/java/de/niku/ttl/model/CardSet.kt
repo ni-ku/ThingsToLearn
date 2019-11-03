@@ -6,8 +6,7 @@ data class CardSet(
     val id: Long?,
     val name: String,
     val cardCnt: Int,
-    val cards: List<Card>,
-    val questions: List<Question>
+    val cards: List<Card>
 ) {
     companion object {
         fun fromTblCardSet(item: TblCardSet): CardSet {
@@ -15,7 +14,6 @@ data class CardSet(
                 item.id,
                 item.name,
                 item.cardCnt,
-                mutableListOf(),
                 mutableListOf()
             )
             return cs

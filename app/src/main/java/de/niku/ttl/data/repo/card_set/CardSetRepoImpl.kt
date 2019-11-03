@@ -4,20 +4,16 @@ import android.annotation.SuppressLint
 import de.niku.ttl.data.db.dao.CardDao
 import de.niku.ttl.data.db.dao.CardSetDao
 import de.niku.ttl.data.db.dao.CardSetWithCardsDao
-import de.niku.ttl.data.db.dao.QuestionsDao
 import de.niku.ttl.data.db.entity.CardSetWithCards
 import de.niku.ttl.data.db.entity.TblCard
 import de.niku.ttl.data.db.entity.TblCardSet
-import de.niku.ttl.data.db.entity.TblQuestion
 import de.niku.ttl.model.Card
 import de.niku.ttl.model.CardSet
-import de.niku.ttl.model.Question
 import io.reactivex.Observable
 
 class CardSetRepoImpl(
     val cardSetDao: CardSetDao,
     val cardDao: CardDao,
-    val questionDao: QuestionsDao,
     val cardSetWithCardsDao: CardSetWithCardsDao
 ) : CardSetRepo {
 
@@ -50,21 +46,11 @@ class CardSetRepoImpl(
                                         cards.add(card)
                                     }
 
-                                    val questions: MutableList<Question> = mutableListOf()
-                                    for (q in item.questions) {
-                                        var question = Question(
-                                            q.id,
-                                            q.question
-                                        )
-                                        questions.add(question)
-                                    }
-
                                     var cs = CardSet(
                                         item.cardSet.id,
                                         item.cardSet.name,
                                         item.cardSet.cardCnt,
-                                        cards,
-                                        questions
+                                        cards
                                     )
                                     return@run cs
                                 }
@@ -95,21 +81,11 @@ class CardSetRepoImpl(
                         cards.add(card)
                     }
 
-                    val questions: MutableList<Question> = mutableListOf()
-                    for (q in item.questions) {
-                        var question = Question(
-                            q.id,
-                            q.question
-                        )
-                        questions.add(question)
-                    }
-
                     var cs = CardSet(
                         item.cardSet.id,
                         item.cardSet.name,
                         item.cardSet.cardCnt,
-                        cards,
-                        questions
+                        cards
                     )
                     return@run cs
                 }
@@ -119,8 +95,7 @@ class CardSetRepoImpl(
     @SuppressLint("CheckResult")
     override fun createCardSet(
         name: String,
-        cards: List<Card>,
-        questions: List<Question>
+        cards: List<Card>
     ): Observable<CardSet> {
         return Observable.create<CardSet> {
             run {
@@ -132,12 +107,7 @@ class CardSetRepoImpl(
                     cardDao.insert(tblCard)
                 }
 
-                for (question in questions) {
-                    var tblQuestion = TblQuestion(null, question.text, cardSetId)
-                    questionDao.insert(tblQuestion)
-                }
-
-                val cardSet = CardSet(cardSetId, name, cards.size, mutableListOf(), mutableListOf())
+                val cardSet = CardSet(cardSetId, name, cards.size, mutableListOf())
                 it.onNext(cardSet)
 
             }
@@ -155,13 +125,6 @@ class CardSetRepoImpl(
                         for (card in cs.cards) {
                             var tblCard = TblCard(null, card.front, card.back, cardSetId)
                             cardDao.insert(tblCard)
-                        }
-                    }
-
-                    if (cs.questions != null) {
-                        for (question in cs.questions) {
-                            var tblQuestion = TblQuestion(null, question.text, cardSetId)
-                            questionDao.insert(tblQuestion)
                         }
                     }
                 }
@@ -193,12 +156,6 @@ class CardSetRepoImpl(
                 for (card in cardSet.cards) {
                     var tblCard = TblCard(card.id, card.front, card.back, cardSet.id!!)
                     cardDao.insert(tblCard)
-                }
-
-                questionDao.deleteAllQuestionsForCardSet(cardSet.id!!)
-                for (question in cardSet.questions) {
-                    var tblQuestion = TblQuestion(question.id, question.text, cardSet.id!!)
-                    questionDao.insert(tblQuestion)
                 }
 
                 it.onNext(true)

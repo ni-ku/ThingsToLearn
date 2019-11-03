@@ -7,8 +7,6 @@ import de.niku.ttl.common.base.BaseViewModel
 import de.niku.ttl.data.repo.card_set.CardSetRepo
 import de.niku.ttl.model.Card
 import de.niku.ttl.model.CardSet
-import de.niku.ttl.model.Question
-import de.niku.ttl.view.dialog_question_create.QuestionEditParams
 import de.niku.ttl.view.fragment_card_create.CardEditParams
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -20,13 +18,11 @@ class CardSetCreateViewModel(
     val name: MutableLiveData<String> = MutableLiveData()
     val nameError : MutableLiveData<String> = MutableLiveData()
     val cards: MutableLiveData<MutableList<Card>> = MutableLiveData()
-    val questions: MutableLiveData<MutableList<Question>> = MutableLiveData()
 
     val editCardSet: MutableLiveData<CardSet> = MutableLiveData()
 
     init {
         cards.value = mutableListOf()
-        questions.value = mutableListOf()
     }
 
     @SuppressLint("CheckResult")
@@ -39,7 +35,6 @@ class CardSetCreateViewModel(
                     editCardSet.value = cardSet
                     name.value = cardSet.name
                     cards.value = cardSet.cards.toMutableList()
-                    questions.value = cardSet.questions.toMutableList()
                 }
 
             }, { error ->
@@ -50,10 +45,6 @@ class CardSetCreateViewModel(
 
     fun createCardClick() {
         mEvents.value = CardSetCreateEvents.ShowCreateCardDialog()
-    }
-
-    fun createQuestionClick() {
-        mEvents.value = CardSetCreateEvents.ShowCreateQuestionDialog()
     }
 
     fun addCard(front: String, back: String) {
@@ -88,35 +79,6 @@ class CardSetCreateViewModel(
         cards.value = cards.value
     }
 
-    fun addQuestion(text: String) {
-        var question = Question(
-            null,
-            text
-        )
-        questions.value?.add(question)
-        questions.value = questions.value
-    }
-
-    fun onQuestionEdit(position: Int) {
-        val params = QuestionEditParams(position, questions.value!!.get(position))
-        mEvents.value = CardSetCreateEvents.ShowEditQuestionDialog(params)
-    }
-
-    fun onQuestionEdited(position: Int, text: String) {
-        var question = Question(
-            null,
-            text
-        )
-        questions.value?.removeAt(position)
-        questions.value?.add(position, question)
-        questions.value = questions.value
-    }
-
-    fun onQuestionDelete(position: Int) {
-        questions.value?.removeAt(position)
-        questions.value = questions.value
-    }
-
     fun onFinishClick() {
         if (editCardSet.value == null) {
             finishCreateCardSet()
@@ -137,12 +99,10 @@ class CardSetCreateViewModel(
 
         val cardSetName = name.value
         val cardSetCards = cards.value
-        val cardSetQuestions = questions.value
 
         cardSetRepo.createCardSet(
             cardSetName!!,
-            cardSetCards!!.toList(),
-            cardSetQuestions!!.toList()
+            cardSetCards!!.toList()
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -164,8 +124,7 @@ class CardSetCreateViewModel(
             editCardSet.value!!.id,
             name.value!!,
             cards.value!!.size,
-            cards.value!!.toList(),
-            questions.value!!
+            cards.value!!.toList()
         )
 
         cardSetRepo.updateCardSet(cardSet)
