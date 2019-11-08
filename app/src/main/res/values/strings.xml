@@ -14,6 +14,9 @@
   <string name="settings">Einstellungen</string>
   <string name="n_selected_items">%1$d selected Items</string>
   <string name="select_all">Select all</string>
+  <string name="restart">Restart</string>
+  <string name="play_again">Play again?</string>
+  <string name="never">Never</string>
 
   <!-- CardSets Fragment -->
   <string name="card_sets">CardSets</string>
@@ -35,11 +38,21 @@
   <!-- CardSet Detail Fragment -->
   <string name="start_lerning">Start learning</string>
   <string name="view_cards">View cards</string>
+  <string name="learn_settings">Learn Settings</string>
+  <string name="vice_versa">Vice Versa</string>
+  <string name="shuffle">Shuffle</string>
+  <string name="statistics">Statistics</string>
+  <string name="completed">Completed</string>
+  <string name="correct">Correct</string>
+  <string name="last_time_played">Last time played</string>
 
   <!-- Start Learning Dialog -->
   <string name="learn_normal_mode">Learn</string>
   <string name="learn_quiz_mode">Quiz</string>
   <string name="start">Start</string>
+
+  <!-- Continue Lerning Dialog -->
+  <string name="continue_lern_dialog_text">All cards have been used. Do you wish to restart?</string>
 
 
   <!-- Dialogs -->

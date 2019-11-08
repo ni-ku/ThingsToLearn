@@ -22,6 +22,11 @@
     <item name="android:textAppearance">@style/App.Text.Subtitle</item>
   </style>
 
+  <style name="App.TextView.Subtitle.Accent" parent="@style/App.TextView">
+    <item name="android:textAppearance">@style/App.Text.Subtitle</item>
+    <item name="android:textColor">@color/colorAccent</item>
+  </style>
+
   <!--
     BUTTON STYLES
   -->

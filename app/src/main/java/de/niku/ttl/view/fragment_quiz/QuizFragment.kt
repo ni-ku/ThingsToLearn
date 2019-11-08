@@ -9,9 +9,10 @@ import de.niku.ttl.BR
 import de.niku.ttl.R
 import de.niku.ttl.common.base.BaseFragment
 import de.niku.ttl.databinding.FragmentQuizBinding
+import de.niku.ttl.view.dialog_continue_learn.ContinueLearnDialog
 import java.util.*
 
-class QuizFragment : BaseFragment<FragmentQuizBinding, QuizViewModel>() {
+class QuizFragment : BaseFragment<FragmentQuizBinding, QuizViewModel>(), ContinueLearnDialog.ResultReceiver {
 
     val args: QuizFragmentArgs by navArgs()
     val timer = Timer()
@@ -52,7 +53,9 @@ class QuizFragment : BaseFragment<FragmentQuizBinding, QuizViewModel>() {
         connectObservables()
 
         val cardSetId = args.cardSetId
-        mViewModel.initById(cardSetId)
+        val viceVersa = args.viceVersa
+        val shuffle = args.shuffle
+        mViewModel.initById(cardSetId, viceVersa, shuffle)
     }
 
     override fun onDestroy() {
@@ -70,6 +73,12 @@ class QuizFragment : BaseFragment<FragmentQuizBinding, QuizViewModel>() {
                     is QuizEvents.StartSelectionTimer -> {
                         countDownTimer.start()
                     }
+                    is QuizEvents.CardSetDone -> {
+                        showContinueLearnDialog()
+                    }
+                    is QuizEvents.CloseView -> {
+                        activity!!.onBackPressed()
+                    }
                 }
             }
         })
@@ -77,5 +86,18 @@ class QuizFragment : BaseFragment<FragmentQuizBinding, QuizViewModel>() {
 
     fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
+    }
+
+    fun showContinueLearnDialog() {
+        val dialog = ContinueLearnDialog(this)
+        dialog.show(fragmentManager!!, ContinueLearnDialog.TAG)
+    }
+
+    override fun onDone() {
+        mViewModel.writeStatsAndCloseView()
+    }
+
+    override fun onContinue() {
+        mViewModel.onRestart()
     }
 }

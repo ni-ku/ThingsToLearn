@@ -124,7 +124,10 @@ class CardSetCreateViewModel(
             editCardSet.value!!.id,
             name.value!!,
             cards.value!!.size,
-            cards.value!!.toList()
+            cards.value!!.toList(),
+            mutableListOf(),
+            editCardSet.value!!.started,
+            editCardSet.value!!.completed
         )
 
         cardSetRepo.updateCardSet(cardSet)

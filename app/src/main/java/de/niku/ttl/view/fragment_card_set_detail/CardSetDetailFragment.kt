@@ -14,6 +14,7 @@ import de.niku.ttl.BR
 
 import de.niku.ttl.R
 import de.niku.ttl.common.base.BaseFragment
+import de.niku.ttl.common.resources.ResourceHelper
 import de.niku.ttl.databinding.FragmentCardSetDetailBinding
 import de.niku.ttl.view.dialog_start_learning.StartLearningDialog
 import de.niku.ttl.view.dialog_start_learning.StartLearningResultData
@@ -31,9 +32,16 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         connectObservables()
+        createLifecycleObservers()
+        mViewModel.initFromStringRes()
 
         val cardSetId = args.cardSetId
         mViewModel.initById(cardSetId)
+    }
+
+    fun createLifecycleObservers() {
+        mViewModel.mResHelper = ResourceHelper(context)
+        lifecycle.addObserver(mViewModel.mResHelper)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -73,14 +81,6 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
         mViewModel.mEvents.observe(this, Observer { evt ->
             run {
                 when (evt) {
-                    is CardSetDetailEvents.ShowStartLearningDialog -> {
-                        var dialog = StartLearningDialog(object: StartLearningDialog.ResultReceiver {
-                            override fun onStartLearningDialogResult(result: StartLearningResultData) {
-                                mViewModel.onStartLearningResult(result)
-                            }
-                        })
-                        dialog.show(fragmentManager!!, StartLearningDialog.TAG)
-                    }
                     is CardSetDetailEvents.NavigateToViewCards -> {
                         val action = CardSetDetailFragmentDirections.actionCardSetDetailToViewCards(evt.id, evt.title)
                         findNavController().navigate(action)
@@ -89,12 +89,18 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
                         val action = CardSetDetailFragmentDirections.actionCardSetDetailToLearnFragment(
                             evt.params.cardSetId,
                             evt.params.cardSetName,
-                            evt.params.mode
+                            evt.params.viceVersa,
+                            evt.params.shuffle
                         )
                         findNavController().navigate(action)
                     }
                     is CardSetDetailEvents.NavigateToQuizView -> {
-                        val action = CardSetDetailFragmentDirections.actionCardSetDetailToQuizFragment(evt.id, evt.title)
+                        val action = CardSetDetailFragmentDirections.actionCardSetDetailToQuizFragment(
+                            evt.params.cardSetId,
+                            evt.params.cardSetName,
+                            evt.params.viceVersa,
+                            evt.params.shuffle
+                        )
                         findNavController().navigate(action)
                     }
                 }

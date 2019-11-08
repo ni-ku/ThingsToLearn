@@ -10,5 +10,7 @@ data class TblCardSet(
     @PrimaryKey(autoGenerate = true)
     val id: Long?,
     val name: String,
-    val cardCnt: Int
+    val cardCnt: Int,
+    val started: Int,
+    val completed: Int
 )

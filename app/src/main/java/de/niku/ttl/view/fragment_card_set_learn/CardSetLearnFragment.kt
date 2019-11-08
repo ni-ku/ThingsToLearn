@@ -11,10 +11,12 @@ import de.niku.ttl.BR
 import de.niku.ttl.R
 import de.niku.ttl.common.base.BaseFragment
 import de.niku.ttl.databinding.FragmentCardSetLearnBinding
+import de.niku.ttl.view.dialog_continue_learn.ContinueLearnDialog
 
 class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLearnViewModel>(),
     GestureDetector.OnGestureListener,
-    GestureDetector.OnDoubleTapListener {
+    GestureDetector.OnDoubleTapListener,
+    ContinueLearnDialog.ResultReceiver {
 
     companion object {
         const val SWIPE_VELOCITY_THRESHOLD = 4000
@@ -47,8 +49,9 @@ class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLe
         mGestureDetector.setOnDoubleTapListener(this)
 
         val cardSetId = args.cardSetId
-        val mode = args.mode
-        mViewModel.initById(cardSetId, mode)
+        val viceVersa = args.viceVersa
+        val shuffle = args.shuffle
+        mViewModel.initById(cardSetId, viceVersa, shuffle)
     }
 
     override fun onDestroy() {
@@ -60,6 +63,9 @@ class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLe
         mViewModel.mEvents.observe(this, Observer { evt ->
             run {
                 when (evt) {
+                    is CardSetLearnEvents.CardSetDone -> {
+                        showContinueLearnDialog()
+                    }
                 }
             }
         })
@@ -67,6 +73,19 @@ class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLe
 
     fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
+    }
+
+    fun showContinueLearnDialog() {
+        val dialog = ContinueLearnDialog(this)
+        dialog.show(fragmentManager!!, ContinueLearnDialog.TAG)
+    }
+
+    override fun onDone() {
+        activity!!.onBackPressed()
+    }
+
+    override fun onContinue() {
+        mViewModel.onRestart()
     }
 
     override fun onShowPress(e: MotionEvent?) {

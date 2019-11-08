@@ -7,6 +7,7 @@ import de.niku.ttl.common.base.BaseViewModel
 import de.niku.ttl.data.repo.card_set.CardSetRepo
 import de.niku.ttl.model.Card
 import de.niku.ttl.model.CardSet
+import de.niku.ttl.model.LearnStat
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -23,6 +24,7 @@ class QuizViewModel(
     }
 
     val cardSet: MutableLiveData<CardSet> = MutableLiveData()
+    lateinit var cards: MutableList<Card>
     val vdQuestion: MutableLiveData<String> = MutableLiveData()
     val vdOption1Text: MutableLiveData<String> = MutableLiveData()
     val vdOption1Color: MutableLiveData<Int> = MutableLiveData()
@@ -34,8 +36,11 @@ class QuizViewModel(
     val vdOption4Color: MutableLiveData<Int> = MutableLiveData()
     val cardOptionIndices: MutableLiveData<IntArray> = MutableLiveData()
     var mCurIndex: Int = -1
+    var mViceVersa: Boolean = false
+    var mShuffle: Boolean = false
     var correctOption: Int = -1
     var optionSelected: Boolean = false
+    var learnStat: LearnStat? = null
 
     val colorDefault: Int = Color.parseColor("#ffffffff")
     val colorCorrect: Int = Color.parseColor("#ff00ff00")
@@ -46,7 +51,9 @@ class QuizViewModel(
         resetOptionColors()
     }
 
-    fun initById(id: Long) {
+    fun initById(id: Long, viceVersa: Boolean, shuffle: Boolean) {
+        mViceVersa = viceVersa
+        mShuffle = shuffle
         fetchCardSet(id)
     }
 
@@ -59,7 +66,37 @@ class QuizViewModel(
             .subscribe({ cs ->
                 run {
                     cardSet.value = cs
-                    onNext()
+                    cards = cs.cards.toMutableList()
+                    onStart()
+                }
+            }, { error ->
+                run {
+
+                }
+            })
+    }
+
+    fun onStart() {
+        if (mShuffle) {
+            cards.shuffle()
+        }
+
+        cardSet.value!!.started += 1
+        updateStartedCol()
+
+        learnStat = LearnStat()
+
+        onNext()
+    }
+
+    @SuppressLint("CheckResult")
+    fun onRestart() {
+        cardSetRepo.addLearnStat(cardSet.value!!.id!!, learnStat!!)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ cs ->
+                run {
+                    onStart()
                 }
             }, { error ->
                 run {
@@ -76,6 +113,9 @@ class QuizViewModel(
             optionSelected = true
             if (option != correctOption) {
                 setOptionColor(option, colorWrong)
+                learnStat!!.wrong += 1
+            } else {
+                learnStat!!.right += 1
             }
             setOptionColor(correctOption, colorCorrect)
             mEvents.value = QuizEvents.StopSelectionTimer()
@@ -85,11 +125,15 @@ class QuizViewModel(
     fun onNext() {
         optionSelected = false
         mCurIndex++
-        if (mCurIndex == cardSet.value?.cardCnt) {
-            mCurIndex = 0
+        if (mCurIndex == cards.size) {
+            cardSet.value!!.completed += 1
+            updateCompletedCol()
+            mCurIndex = -1
+            mEvents.value = QuizEvents.CardSetDone()
+            return
         }
 
-        val card = cardSet.value!!.cards.get(mCurIndex)
+        val card = cards[mCurIndex]
         vdQuestion.value = card.front
 
         resetCardOptionIndices()
@@ -105,7 +149,7 @@ class QuizViewModel(
             if (cardOptionIndices.value!![i] < 0) {
                 rndSetIdx = selectRandomUnusedCardIndex()
                 cardOptionIndices.value!![i] = rndSetIdx
-                rndCard = cardSet.value!!.cards.get(rndSetIdx)
+                rndCard = cards[rndSetIdx]
                 setOptionValue(rndCard, i)
             }
         }
@@ -173,5 +217,57 @@ class QuizViewModel(
 
     fun randFromRange(min: Int, max: Int): Int {
         return min + (Math.random() * ((max - min) + 1)).toInt()
+    }
+
+    @SuppressLint("CheckResult")
+    fun updateStartedCol() {
+        cardSetRepo.updateStartedColumn(cardSet.value!!.id!!, cardSet.value!!.started)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({
+                run {
+
+                }
+
+            }, {
+                run {
+
+                }
+
+            })
+    }
+
+    @SuppressLint("CheckResult")
+    fun updateCompletedCol() {
+        cardSetRepo.updateCompletedColumn(cardSet.value!!.id!!, cardSet.value!!.completed)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({
+                run {
+
+                }
+
+            }, {
+                run {
+
+                }
+
+            })
+    }
+
+    @SuppressLint("CheckResult")
+    fun writeStatsAndCloseView() {
+        cardSetRepo.addLearnStat(cardSet.value!!.id!!, learnStat!!)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ cs ->
+                run {
+                    mEvents.value = QuizEvents.CloseView()
+                }
+            }, { error ->
+                run {
+
+                }
+            })
     }
 }

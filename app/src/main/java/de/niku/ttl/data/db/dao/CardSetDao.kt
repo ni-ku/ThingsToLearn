@@ -21,4 +21,12 @@ interface CardSetDao {
     @Query("SELECT * FROM cardsets")
     fun getCardSets(): List<TblCardSet>
 
+    @Query("UPDATE cardsets SET started = :value WHERE id = :id")
+    fun updateStartedColumn(id: Long, value: Int)
+
+    @Query("UPDATE cardsets SET completed = :value WHERE id = :id")
+    fun updateCompletedColumn(id: Long, value: Int)
+
+
+
 }

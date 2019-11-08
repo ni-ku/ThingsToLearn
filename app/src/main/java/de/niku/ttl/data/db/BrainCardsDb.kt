@@ -4,22 +4,27 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import de.niku.ttl.common.executors.ioThread
 import de.niku.ttl.data.db.dao.CardDao
 import de.niku.ttl.data.db.dao.CardSetDao
 import de.niku.ttl.data.db.dao.CardSetWithCardsDao
+import de.niku.ttl.data.db.dao.LearnStatDao
 import de.niku.ttl.data.db.entity.CardSetWithCards
 import de.niku.ttl.data.db.entity.TblCard
 import de.niku.ttl.data.db.entity.TblCardSet
+import de.niku.ttl.data.db.entity.TblLearnStat
 
 @Database(
     version = 1,
     entities = [
         TblCardSet::class,
-        TblCard::class
+        TblCard::class,
+        TblLearnStat::class
     ]
 )
+@TypeConverters(DbTypeConverters::class)
 abstract class BrainCardsDb : RoomDatabase() {
 
     companion object {
@@ -156,11 +161,14 @@ abstract class BrainCardsDb : RoomDatabase() {
             var cardSet = TblCardSet(
                 null,
                 "Deutsche Bundespräsidenten",
-                cards.size
+                cards.size,
+                0,
+                0
             )
             var cardSetFull = CardSetWithCards(
                 cardSet,
-                cards
+                cards,
+                mutableListOf()
             )
 
             return cardSetFull
@@ -170,4 +178,5 @@ abstract class BrainCardsDb : RoomDatabase() {
     abstract fun CardSetDao(): CardSetDao
     abstract fun CardDao(): CardDao
     abstract fun CardSetWithCardsDao(): CardSetWithCardsDao
+    abstract fun LearnStatDao(): LearnStatDao
 }
