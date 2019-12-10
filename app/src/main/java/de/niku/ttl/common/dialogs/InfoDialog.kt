@@ -24,9 +24,7 @@ class InfoDialog {
             .setMessage(message)
             .setPositiveButton(textConfirm) { dialog, which ->
                 run {
-                    if (callback != null) {
-                        callback.onConfirm(which)
-                    }
+                    callback?.onConfirm(which)
                 }
             }
             .create()

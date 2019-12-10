@@ -50,12 +50,24 @@ class CardSetRepoImpl(
                                         cards.add(card)
                                     }
 
+                                    val stats: MutableList<LearnStat> = mutableListOf()
+                                    for (s in item.stats) {
+                                        var ls = LearnStat(
+                                            s.id,
+                                            s.date,
+                                            s.wrong,
+                                            s.right,
+                                            s.duration
+                                        )
+                                        stats.add(ls)
+                                    }
+
                                     var cs = CardSet(
                                         item.cardSet.id,
                                         item.cardSet.name,
                                         item.cardSet.cardCnt,
                                         cards,
-                                        mutableListOf(),
+                                        stats,
                                         item.cardSet.started,
                                         item.cardSet.completed
                                     )
@@ -147,6 +159,13 @@ class CardSetRepoImpl(
                         for (card in cs.cards) {
                             var tblCard = TblCard(null, card.front, card.back, cardSetId)
                             cardDao.insert(tblCard)
+                        }
+                    }
+
+                    if (cs.stats != null) {
+                        for (stat in cs.stats) {
+                            var tblLearnStat = TblLearnStat(null, stat.date, stat.wrong, stat.right, stat.duration, cardSetId)
+                            learnStatDao.insert(tblLearnStat)
                         }
                     }
                 }

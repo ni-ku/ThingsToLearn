@@ -26,6 +26,12 @@ import de.niku.ttl.util.colorMenuItem
 import de.niku.ttl.util.getResColorInt
 import de.niku.ttl.view.activity_main.MainActivity
 import android.content.Context
+import android.os.Environment
+import android.provider.DocumentsContract
+import com.google.android.material.snackbar.Snackbar
+import de.niku.ttl.Constants.Companion.RQ_CREATE_FILE
+import java.io.File
+import java.io.FileWriter
 import java.io.IOException
 import kotlin.text.Charsets.UTF_8
 
@@ -34,10 +40,11 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
     ActionMode.Callback {
 
     lateinit var cardSetAdapter: CardSetAdapter
-    lateinit var actionMode: ActionMode
+    var actionMode: ActionMode? = null
 
-    var writeExtStoragePermGranted: Boolean = false
-    var readExtStoragePermGranted: Boolean = false
+    private var export: Boolean = false
+    private var writeExtStoragePermGranted: Boolean = false
+    private var readExtStoragePermGranted: Boolean = false
 
     override fun getLayoutResId(): Int = R.layout.fragment_card_sets
     override fun getViewBindingId(): Int = BR.viewmodel
@@ -63,8 +70,8 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RQ_SELECT_FILE) {
             if (resultCode == Activity.RESULT_OK) {
-                val uri: Uri = data!!.data
-                val json = loadJSONFromUri(uri, context!!)
+                val uri: Uri? = data!!.data
+                val json = loadJSONFromUri(uri!!, context!!)
                 mViewModel.importCardSetsFromJson(json!!)
             }
         }
@@ -78,6 +85,7 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        export = false
         when (item.itemId) {
             R.id.menu_import -> {
                 checkSorageIOPermissions()
@@ -87,6 +95,7 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
                 if (activity is MainActivity) {
                     (activity as MainActivity)?.lockNavDrawer()
                 }
+                export = true
                 actionMode = activity?.startActionMode(this)!!
                 return true
 
@@ -161,6 +170,30 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
                         Toast.makeText(context, "Import Successful", Toast.LENGTH_SHORT).show()
                         mViewModel.fetchCardSets()
                     }
+                    is CardSetsEvents.ShowExportSuccess -> {
+                        cardSetAdapter.stopSelectionMode()
+                        actionMode?.finish()
+                        actionMode = null
+                        var snackbar = Snackbar.make(mDataBinding.root, evt.message, Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Ok") { snackbar.dismiss() }
+                        snackbar.show()
+                    }
+                    is CardSetsEvents.ShowExportError -> {
+                        cardSetAdapter.stopSelectionMode()
+                        actionMode?.finish()
+                        actionMode = null
+
+                        InfoDialog(context!!,
+                            Constants.DIALOG_EXPORT_CARD_SET_ERROR,
+                            R.string.dialog_export_card_set_error_title,
+                            R.string.dialog_export_card_set_error_text,
+                            R.string.ok,
+                            object : InfoDialog.InfoDialogResultReceiver {
+                                override fun onConfirm(dialogId: Int) {
+                                    // Do nothing
+                                }
+                            })
+                    }
                 }
             }
         })
@@ -233,10 +266,17 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
                     }
 
                     if (readExtStoragePermGranted && writeExtStoragePermGranted) {
-                        //doExport()
-                        doFileSelection()
+                        doFileOperationWithPermission()
                     }
                 }
+        } else {
+            doFileOperationWithPermission()
+        }
+    }
+
+    fun doFileOperationWithPermission() {
+        if (export) {
+            doExport()
         } else {
             doFileSelection()
         }
