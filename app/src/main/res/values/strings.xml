@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Brain Cards</string>
+  <string name="app_name">ThingsToLearn</string>
 
   <!-- General - used in several places -->
   <string name="done">Done</string>
@@ -14,6 +14,9 @@
   <string name="settings">Einstellungen</string>
   <string name="n_selected_items">%1$d selected Items</string>
   <string name="select_all">Select all</string>
+  <string name="restart">Restart</string>
+  <string name="play_again">Play again?</string>
+  <string name="never">Never</string>
 
   <!-- CardSets Fragment -->
   <string name="card_sets">CardSets</string>
@@ -26,35 +29,39 @@
   <string name="front_colon">Front:</string>
   <string name="back_colon">Back:</string>
   <string name="create_card_set_from_error_name_empty">Name value can\'t be empty</string>
-  <string name="question_colon">Question:</string>
 
   <!-- Create Card Dialog -->
   <string name="create_card">Create Card</string>
   <string name="create_card_form_error_front_empty">Front value can\'t be empty</string>
   <string name="create_card_form_error_back_empty">Back value can\'t be empty</string>
 
-  <!-- Create Question Dialog -->
-  <string name="question">Question</string>
-  <string name="create_question_dialog_title">Create Question</string>
-  <string name="create_question_form_error_question_empty">Question value can\'t be empty</string>
-  <string name="create_question_form_error_question_include_value">Question has to include {front} or {back}</string>
-
   <!-- CardSet Detail Fragment -->
   <string name="start_lerning">Start learning</string>
   <string name="view_cards">View cards</string>
+  <string name="learn_settings">Learn Settings</string>
+  <string name="vice_versa">Vice Versa</string>
+  <string name="shuffle">Shuffle</string>
+  <string name="statistics">Statistics</string>
+  <string name="completed">Completed</string>
+  <string name="correct">Correct</string>
+  <string name="last_time_played">Last time played</string>
 
   <!-- Start Learning Dialog -->
   <string name="learn_normal_mode">Learn</string>
   <string name="learn_quiz_mode">Quiz</string>
   <string name="start">Start</string>
 
+  <!-- Continue Lerning Dialog -->
+  <string name="continue_lern_dialog_text">All cards have been used. Do you wish to restart?</string>
+
 
   <!-- Dialogs -->
   <string name="dialog_delete_card_set_error_title">Error</string>
-  <string name="dialog_delete_card_set_error_text">An unexpected error occured while trying to delete the cardset.
-  </string>
+  <string name="dialog_delete_card_set_error_text">An unexpected error occurred while trying to delete the cardset.</string>
   <string name="dialog_confirm_delete_card_set_title">Delete CardSet?</string>
   <string name="dialog_confirm_delete_card_set_text">Are you sure you want to delete this CardSet?</string>
+  <string name="dialog_export_card_set_error_title">Error</string>
+  <string name="dialog_export_card_set_error_text">An unexpected error occurred during export.</string>
 
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>

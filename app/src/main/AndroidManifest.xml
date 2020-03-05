@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="de.niku.braincards">
+          package="de.niku.ttl">
     
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-            android:name=".BrainCardsApplication"
+            android:name="de.niku.ttl.TtlApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -16,7 +16,7 @@
             android:theme="@style/App.Theme"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".view.activity_main.MainActivity">
+        <activity android:name="de.niku.ttl.view.activity_main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

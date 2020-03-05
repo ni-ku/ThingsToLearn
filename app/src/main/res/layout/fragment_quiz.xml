@@ -6,8 +6,8 @@
 
   <data>
     <variable name="viewmodel"
-              type="de.niku.braincards.view.fragment_quiz.QuizViewModel"/>
-    <import type="de.niku.braincards.view.fragment_quiz.QuizViewModel"/>
+              type="de.niku.ttl.view.fragment_quiz.QuizViewModel"/>
+    <import type="de.niku.ttl.view.fragment_quiz.QuizViewModel"/>
   </data>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
