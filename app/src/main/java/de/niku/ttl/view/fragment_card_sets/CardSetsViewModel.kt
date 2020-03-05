@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import de.niku.ttl.common.base.BaseViewModel
 import de.niku.ttl.common.base.ViewState
+import de.niku.ttl.data.fs.FsRepo
 import de.niku.ttl.data.repo.card_set.CardSetRepo
 import de.niku.ttl.model.CardSet
 import de.niku.ttl.util.hasExternalStorage
@@ -14,7 +15,8 @@ import io.reactivex.schedulers.Schedulers
 import java.lang.NullPointerException
 
 class CardSetsViewModel(
-    val cardSetRepo: CardSetRepo
+    val cardSetRepo: CardSetRepo,
+    val fsRepo: FsRepo
 ) : BaseViewModel<CardSetsEvents>() {
 
     var vdShowLoadingAnimation: MutableLiveData<Boolean> = MutableLiveData()
@@ -90,13 +92,25 @@ class CardSetsViewModel(
         )
     }
 
+    @SuppressLint("CheckResult")
     fun exportCardSets(cardSets: List<CardSet>) {
         if (cardSets.isEmpty()) {
             return
         }
 
         if (hasExternalStorage() && isExternalStorageWriteable()) {
-
+            fsRepo.writeCardSetsToFile(cardSets)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
+                    run {
+                        mEvents.value = CardSetsEvents.ShowExportSuccess("Successfully exported to $it")
+                    }
+                }, {
+                    run {
+                        mEvents.value = CardSetsEvents.ShowExportError()
+                }
+            })
         }
     }
 
