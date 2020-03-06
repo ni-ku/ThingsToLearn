@@ -63,7 +63,10 @@ class CardSetsFragment : BaseFragment<FragmentCardSetsBinding, CardSetsViewModel
 
         mDataBinding.rvCardSets.layoutManager = LinearLayoutManager(context)
         mDataBinding.rvCardSets.adapter = cardSetAdapter
+    }
 
+    override fun onResume() {
+        super.onResume()
         mViewModel.fetchCardSets()
     }
 

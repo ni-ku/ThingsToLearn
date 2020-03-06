@@ -64,7 +64,7 @@ class CardSetCreateFragment : BaseFragment<FragmentCardSetCreateBinding, CardSet
                         dialog.show(fragmentManager!!, CardCreateDialog.TAG)
                     }
                     is CardSetCreateEvents.CardSetCreateSuccess -> {
-                        findNavController().navigateUp()
+                        findNavController().popBackStack();
                     }
                     is CardSetCreateEvents.ShowEditCardDialog -> {
                         var dialog = CardCreateDialog(this, evt.params)
