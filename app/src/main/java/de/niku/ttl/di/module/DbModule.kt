@@ -22,24 +22,24 @@ class DbModule {
     @Provides
     @Singleton
     fun provideCardSetDao(db: BrainCardsDb?): CardSetDao {
-        return db!!.CardSetDao()
+        return db!!.cardSetDao()
     }
 
     @Provides
     @Singleton
     fun provideCardDao(db: BrainCardsDb?): CardDao {
-        return db!!.CardDao()
+        return db!!.cardDao()
     }
 
     @Provides
     @Singleton
     fun provideCardSetWithCardsDao(db: BrainCardsDb?): CardSetWithCardsDao {
-        return db!!.CardSetWithCardsDao()
+        return db!!.cardSetWithCardsDao()
     }
 
     @Provides
     @Singleton
     fun provideLearnStatDao(db: BrainCardsDb?): LearnStatDao {
-        return db!!.LearnStatDao()
+        return db!!.learnStatDao()
     }
 }

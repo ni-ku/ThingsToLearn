@@ -15,10 +15,10 @@ import de.niku.ttl.model.LearnStat
 import io.reactivex.Observable
 
 class CardSetRepoImpl(
-    val cardSetDao: CardSetDao,
-    val cardDao: CardDao,
-    val cardSetWithCardsDao: CardSetWithCardsDao,
-    val learnStatDao: LearnStatDao
+    private val cardSetDao: CardSetDao,
+    private val cardDao: CardDao,
+    private val cardSetWithCardsDao: CardSetWithCardsDao,
+    private val learnStatDao: LearnStatDao
 ) : CardSetRepo {
 
     @SuppressLint("CheckResult")
@@ -34,7 +34,7 @@ class CardSetRepoImpl(
             .flatMap { list ->
                 run {
                     if (list.isEmpty()) {
-                        var emptyList: List<CardSet> = mutableListOf()
+                        val emptyList: List<CardSet> = mutableListOf()
                         Observable.just(emptyList)
                     } else {
                         Observable.fromIterable(list)
@@ -42,7 +42,7 @@ class CardSetRepoImpl(
                                 run {
                                     val cards: MutableList<Card> = mutableListOf()
                                     for (c in item.cards) {
-                                        var card = Card(
+                                        val card = Card(
                                             c.id,
                                             c.front,
                                             c.back
@@ -52,7 +52,7 @@ class CardSetRepoImpl(
 
                                     val stats: MutableList<LearnStat> = mutableListOf()
                                     for (s in item.stats) {
-                                        var ls = LearnStat(
+                                        val ls = LearnStat(
                                             s.id,
                                             s.date,
                                             s.wrong,
@@ -62,7 +62,7 @@ class CardSetRepoImpl(
                                         stats.add(ls)
                                     }
 
-                                    var cs = CardSet(
+                                    CardSet(
                                         item.cardSet.id,
                                         item.cardSet.name,
                                         item.cardSet.cardCnt,
@@ -71,7 +71,6 @@ class CardSetRepoImpl(
                                         item.cardSet.started,
                                         item.cardSet.completed
                                     )
-                                    return@run cs
                                 }
                             }
                             .toList()
@@ -92,7 +91,7 @@ class CardSetRepoImpl(
                 run {
                     val cards: MutableList<Card> = mutableListOf()
                     for (c in item.cards) {
-                        var card = Card(
+                        val card = Card(
                             c.id,
                             c.front,
                             c.back
@@ -102,7 +101,7 @@ class CardSetRepoImpl(
 
                     val stats: MutableList<LearnStat> = mutableListOf()
                     for (s in item.stats) {
-                        var ls = LearnStat(
+                        val ls = LearnStat(
                             s.id,
                             s.date,
                             s.wrong,
@@ -112,7 +111,7 @@ class CardSetRepoImpl(
                         stats.add(ls)
                     }
 
-                    var cs = CardSet(
+                    return@run CardSet(
                         item.cardSet.id,
                         item.cardSet.name,
                         item.cardSet.cardCnt,
@@ -121,7 +120,6 @@ class CardSetRepoImpl(
                         item.cardSet.started,
                         item.cardSet.completed
                     )
-                    return@run cs
                 }
             }
     }
@@ -137,7 +135,7 @@ class CardSetRepoImpl(
                 val cardSetId = cardSetDao.insert(cardSetTbl)
 
                 for (card in cards) {
-                    var tblCard = TblCard(null, card.front, card.back, cardSetId)
+                    val tblCard = TblCard(null, card.front, card.back, cardSetId)
                     cardDao.insert(tblCard)
                 }
 
@@ -155,18 +153,14 @@ class CardSetRepoImpl(
                     val cardSetTbl = TblCardSet(null, cs.name, cs.cards.size, cs.started, cs.completed)
                     val cardSetId = cardSetDao.insert(cardSetTbl)
 
-                    if (cs.cards != null) {
-                        for (card in cs.cards) {
-                            var tblCard = TblCard(null, card.front, card.back, cardSetId)
-                            cardDao.insert(tblCard)
-                        }
+                    for (card in cs.cards) {
+                        val tblCard = TblCard(null, card.front, card.back, cardSetId)
+                        cardDao.insert(tblCard)
                     }
 
-                    if (cs.stats != null) {
-                        for (stat in cs.stats) {
-                            var tblLearnStat = TblLearnStat(null, stat.date, stat.wrong, stat.right, stat.duration, cardSetId)
-                            learnStatDao.insert(tblLearnStat)
-                        }
+                    for (stat in cs.stats) {
+                        val tblLearnStat = TblLearnStat(null, stat.date, stat.wrong, stat.right, stat.duration, cardSetId)
+                        learnStatDao.insert(tblLearnStat)
                     }
                 }
                 it.onNext(true)
@@ -177,7 +171,7 @@ class CardSetRepoImpl(
     override fun deleteCardSet(id: Long): Observable<Boolean> {
         return Observable.create<Boolean> {
             run {
-                var deletedRowsCnt = cardSetDao.deleteById(id)
+                val deletedRowsCnt = cardSetDao.deleteById(id)
                 if (deletedRowsCnt > 0) {
                     it.onNext(true)
                 } else {
@@ -201,7 +195,7 @@ class CardSetRepoImpl(
 
                 cardDao.deleteAllCardsForCardSet(cardSet.id!!)
                 for (card in cardSet.cards) {
-                    var tblCard = TblCard(card.id, card.front, card.back, cardSet.id!!)
+                    val tblCard = TblCard(card.id, card.front, card.back, cardSet.id)
                     cardDao.insert(tblCard)
                 }
 

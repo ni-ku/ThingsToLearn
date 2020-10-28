@@ -16,14 +16,14 @@ import java.lang.NullPointerException
 
 class CardSetsViewModel(
     val cardSetRepo: CardSetRepo,
-    val fsRepo: FsRepo
+    private val fsRepo: FsRepo
 ) : BaseViewModel<CardSetsEvents>() {
 
     var vdShowLoadingAnimation: MutableLiveData<Boolean> = MutableLiveData()
     var vdViewState: ViewState = ViewState()
 
     var mCardSets: MutableLiveData<MutableList<CardSet>> = MutableLiveData()
-    var mTmpPos = -1
+    private var mTmpPos = -1
 
 
     @SuppressLint("CheckResult")
@@ -54,31 +54,31 @@ class CardSetsViewModel(
     }
 
     fun createCardSetClick() {
-        mEvents.value = CardSetsEvents.NavigateCreateCardSet()
+        mEvents.value = CardSetsEvents.NavigateCreateCardSet
     }
 
     fun onCardSetEditClick(position: Int) {
-        mEvents.value = CardSetsEvents.NavigateEditCardSet(mCardSets.value!!.get(position).id!!)
+        mEvents.value = CardSetsEvents.NavigateEditCardSet(mCardSets.value!![position].id!!)
     }
 
     fun onCardSetDeleteClick(position: Int) {
         mTmpPos = position
-        mEvents.value = CardSetsEvents.ShowConfirmDeleteDialog()
+        mEvents.value = CardSetsEvents.ShowConfirmDeleteDialog
     }
 
     @SuppressLint("CheckResult")
     fun onCardSetDelete() {
         if (mTmpPos != -1) {
-            cardSetRepo.deleteCardSet(mCardSets.value!!.get(mTmpPos).id!!)
+            cardSetRepo.deleteCardSet(mCardSets.value!![mTmpPos].id!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ v ->
+                .subscribe({
                     run {
                         fetchCardSets()
                     }
-                }, { error ->
+                }, {
                     run {
-                        mEvents.value = CardSetsEvents.ShowCardSetDeleteError()
+                        mEvents.value = CardSetsEvents.ShowCardSetDeleteError
                     }
                 }
                 )
@@ -108,7 +108,7 @@ class CardSetsViewModel(
                     }
                 }, {
                     run {
-                        mEvents.value = CardSetsEvents.ShowExportError()
+                        mEvents.value = CardSetsEvents.ShowExportError
                 }
             })
         }
@@ -117,18 +117,18 @@ class CardSetsViewModel(
     @SuppressLint("CheckResult")
     fun importCardSetsFromJson(json: String) {
 
-        var gson = Gson()
-        var cardsets: List<CardSet> = gson.fromJson(json, Array<CardSet>::class.java).toList()
+        val gson = Gson()
+        val cardsets: List<CardSet> = gson.fromJson(json, Array<CardSet>::class.java).toList()
 
         cardSetRepo.createCardSets(cardsets)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({ cardSet ->
+            .subscribe ({
                 run {
-                    mEvents.value = CardSetsEvents.ShowImportSuccess()
+                    mEvents.value = CardSetsEvents.ShowImportSuccess
                 }
 
-            }, {error ->
+            }, {
                 run {
                     //mEvents.value = CardSetsEvents.ShowImportSuccess()
                 }

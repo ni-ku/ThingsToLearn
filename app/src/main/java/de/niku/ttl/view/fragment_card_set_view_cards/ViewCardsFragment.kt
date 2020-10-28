@@ -1,6 +1,5 @@
 package de.niku.ttl.view.fragment_card_set_view_cards
 
-
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -15,9 +14,8 @@ import de.niku.ttl.databinding.FragmentViewCardsBinding
 
 class ViewCardsFragment : BaseFragment<FragmentViewCardsBinding, ViewCardsViewModel>() {
 
-    val args: ViewCardsFragmentArgs by navArgs()
-
-    lateinit var cardsAdapter: CardAdapter
+    private val args: ViewCardsFragmentArgs by navArgs()
+    private lateinit var cardsAdapter: CardAdapter
 
     override fun getLayoutResId(): Int = R.layout.fragment_view_cards
     override fun getViewBindingId(): Int = BR.viewmodel
@@ -28,7 +26,7 @@ class ViewCardsFragment : BaseFragment<FragmentViewCardsBinding, ViewCardsViewMo
         connectObservables()
 
         if (!this::cardsAdapter.isInitialized) {
-            cardsAdapter = CardAdapter(mViewModel)
+            cardsAdapter = CardAdapter()
         }
 
         mDataBinding.rvCards.layoutManager = LinearLayoutManager(context)
@@ -45,14 +43,7 @@ class ViewCardsFragment : BaseFragment<FragmentViewCardsBinding, ViewCardsViewMo
         super.onDestroy()
     }
 
-    fun connectObservables() {
-        mViewModel.mEvents.observe(this, Observer { evt ->
-            run {
-                when (evt) {
-                }
-            }
-        })
-
+    private fun connectObservables() {
         mViewModel.cards.observe(this, Observer { list ->
             run {
                 if (this::cardsAdapter.isInitialized) {
@@ -63,7 +54,7 @@ class ViewCardsFragment : BaseFragment<FragmentViewCardsBinding, ViewCardsViewMo
         })
     }
 
-    fun clearObservables() {
+    private fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
         mViewModel.cards.removeObservers(this)
     }

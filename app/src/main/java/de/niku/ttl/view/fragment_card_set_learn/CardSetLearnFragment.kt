@@ -1,5 +1,6 @@
 package de.niku.ttl.view.fragment_card_set_learn
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -12,6 +13,7 @@ import de.niku.ttl.R
 import de.niku.ttl.common.base.BaseFragment
 import de.niku.ttl.databinding.FragmentCardSetLearnBinding
 import de.niku.ttl.view.dialog_continue_learn.ContinueLearnDialog
+import kotlin.math.abs
 
 class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLearnViewModel>(),
     GestureDetector.OnGestureListener,
@@ -23,7 +25,7 @@ class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLe
         const val SWIPE_DISTANCE_THRESHOLD = 100
     }
 
-    val args: CardSetLearnFragmentArgs by navArgs()
+    private val args: CardSetLearnFragmentArgs by navArgs()
     private lateinit var mGestureDetector: GestureDetectorCompat
 
     override fun getLayoutResId(): Int = R.layout.fragment_card_set_learn
@@ -31,14 +33,15 @@ class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLe
     override fun performExtraViewBinding() {
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         connectObservables()
 
-        view.setOnTouchListener { view, event ->
+        view.setOnTouchListener { _, event ->
             run {
                 if (mGestureDetector.onTouchEvent(event)) {
-                    true
+                    return@run true
                 } else {
                     return@run true
                 }
@@ -59,7 +62,7 @@ class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLe
         super.onDestroy()
     }
 
-    fun connectObservables() {
+    private fun connectObservables() {
         mViewModel.mEvents.observe(this, Observer { evt ->
             run {
                 when (evt) {
@@ -71,11 +74,11 @@ class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLe
         })
     }
 
-    fun clearObservables() {
+    private fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
     }
 
-    fun showContinueLearnDialog() {
+    private fun showContinueLearnDialog() {
         val dialog = ContinueLearnDialog(this)
         dialog.show(fragmentManager!!, ContinueLearnDialog.TAG)
     }
@@ -101,9 +104,9 @@ class CardSetLearnFragment : BaseFragment<FragmentCardSetLearnBinding, CardSetLe
 
 
     override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-        var distX: Float = e2!!.x - e1!!.x
+        val distX: Float = e2!!.x - e1!!.x
         //Log.i("Fling Values", "vx: " + velocityX + ", vy: " + velocityY + "distx: " + distX)
-        if (Math.abs(distX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+        if (abs(distX) > SWIPE_DISTANCE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
             mViewModel.onNextClick()
         }
         return true

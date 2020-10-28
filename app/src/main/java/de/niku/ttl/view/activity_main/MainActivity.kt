@@ -1,7 +1,6 @@
 package de.niku.ttl.view.activity_main
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,7 +24,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
      * Set of views where the navigation drawer
      * is accessible from
      */
-    val viewsWithDrawerMenu: Array<String> = arrayOf(
+    private val viewsWithDrawerMenu: Array<String> = arrayOf(
         "CardSets"
     )
 
@@ -39,10 +38,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     override fun getLayoutResId() = R.layout.activity_main
     override fun getViewBindingId() = BR.viewmodel
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
-    }
 
     /**
      *  Hand back a Bundle as result to previous Fragment

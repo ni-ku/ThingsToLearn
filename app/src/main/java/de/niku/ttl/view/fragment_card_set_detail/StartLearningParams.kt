@@ -5,5 +5,4 @@ class StartLearningParams(
     val cardSetName: String,
     val viceVersa: Boolean,
     val shuffle: Boolean
-) {
-}
+)

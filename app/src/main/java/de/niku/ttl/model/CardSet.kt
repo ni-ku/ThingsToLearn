@@ -13,7 +13,7 @@ data class CardSet(
 ) {
     companion object {
         fun fromTblCardSet(item: TblCardSet): CardSet {
-            var cs = CardSet(
+            return CardSet(
                 item.id,
                 item.name,
                 item.cardCnt,
@@ -22,7 +22,6 @@ data class CardSet(
                 0,
                 0
             )
-            return cs
         }
     }
 }

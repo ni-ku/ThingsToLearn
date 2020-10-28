@@ -16,9 +16,8 @@ import de.niku.ttl.view.fragment_card_create.*
 class CardSetCreateFragment : BaseFragment<FragmentCardSetCreateBinding, CardSetCreateViewModel>(),
     ResultReceiver {
 
-    val args: CardSetCreateFragmentArgs by navArgs()
-
-    lateinit var cardsAdapter: CardAdapter
+    private val args: CardSetCreateFragmentArgs by navArgs()
+    private lateinit var cardsAdapter: CardAdapter
 
     override fun getLayoutResId(): Int = R.layout.fragment_card_set_create
     override fun getViewBindingId(): Int = BR.viewmodel
@@ -49,25 +48,25 @@ class CardSetCreateFragment : BaseFragment<FragmentCardSetCreateBinding, CardSet
         super.onDestroy()
     }
 
-    fun createLifecycleObservers() {
+    private fun createLifecycleObservers() {
         mViewModel.mResHelper = ResourceHelper(context)
         lifecycle.addObserver(mViewModel.mResHelper)
     }
 
-    fun connectObservables() {
+    private fun connectObservables() {
 
         mViewModel.mEvents.observe(this, Observer { evt ->
             run {
                 when(evt) {
                     is CardSetCreateEvents.ShowCreateCardDialog -> {
-                        var dialog = CardCreateDialog(this)
+                        val dialog = CardCreateDialog(this)
                         dialog.show(fragmentManager!!, CardCreateDialog.TAG)
                     }
                     is CardSetCreateEvents.CardSetCreateSuccess -> {
-                        findNavController().popBackStack();
+                        findNavController().popBackStack()
                     }
                     is CardSetCreateEvents.ShowEditCardDialog -> {
-                        var dialog = CardCreateDialog(this, evt.params)
+                        val dialog = CardCreateDialog(this, evt.params)
                         dialog.show(fragmentManager!!, CardCreateDialog.TAG)
                     }
                 }
@@ -85,7 +84,7 @@ class CardSetCreateFragment : BaseFragment<FragmentCardSetCreateBinding, CardSet
 
     }
 
-    fun clearObservables() {
+    private fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
     }
 

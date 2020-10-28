@@ -37,7 +37,7 @@ abstract class BaseDialog<D: ViewDataBinding, V: ViewModel> : DialogFragment() {
         performExtraViewBinding()
         mDataBinding.lifecycleOwner = this
         mDataBinding.executePendingBindings()
-        var view = mDataBinding.root
+        val view = mDataBinding.root
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -49,11 +49,11 @@ abstract class BaseDialog<D: ViewDataBinding, V: ViewModel> : DialogFragment() {
                 .create()
 
             alertDialog.setOnShowListener {
-                var positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
                 positiveButton.setOnClickListener {
                     onPositiveClick()
                 }
-                var negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 negativeButton.setOnClickListener {
                     onNegativeClick()
                 }

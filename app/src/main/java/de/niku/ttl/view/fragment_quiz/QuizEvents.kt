@@ -1,8 +1,8 @@
 package de.niku.ttl.view.fragment_quiz
 
 sealed class QuizEvents {
-    class StopSelectionTimer(): QuizEvents()
-    class StartSelectionTimer(): QuizEvents()
-    class CardSetDone(): QuizEvents()
-    class CloseView(): QuizEvents()
+    object StopSelectionTimer : QuizEvents()
+    object StartSelectionTimer : QuizEvents()
+    object CardSetDone : QuizEvents()
+    object CloseView : QuizEvents()
 }

@@ -10,35 +10,18 @@ import de.niku.ttl.R
 import de.niku.ttl.common.base.BaseFragment
 import de.niku.ttl.databinding.FragmentQuizBinding
 import de.niku.ttl.view.dialog_continue_learn.ContinueLearnDialog
-import java.util.*
 
 class QuizFragment : BaseFragment<FragmentQuizBinding, QuizViewModel>(), ContinueLearnDialog.ResultReceiver {
 
-    val args: QuizFragmentArgs by navArgs()
-    val timer = Timer()
-    val timerTask = object : TimerTask() {
-        var cnt = 0
+    private val args: QuizFragmentArgs by navArgs()
 
-        override fun run() {
-            cnt++
-            if (cnt == 15) {
-                this@QuizFragment.requireActivity().runOnUiThread {
-                    mViewModel.onOptionSelected(QuizViewModel.OPTION_NONE)
-                    this.cancel()
-                }
-            }
-
-            var timeProgress = (100 / 14) * cnt
-            mDataBinding.progressbarTimeLimit.progress = timeProgress
-        }
-    }
-    val countDownTimer = object : CountDownTimer(15000, 1000) {
+    private val countDownTimer = object : CountDownTimer(15000, 1000) {
         override fun onFinish() {
             mViewModel.onOptionSelected(QuizViewModel.OPTION_NONE)
         }
 
         override fun onTick(millisUntilFinished: Long) {
-            var timeProgress = ((100 / 14) * ((15000 - millisUntilFinished) / 1000)).toInt()
+            val timeProgress = ((100 / 14) * ((15000 - millisUntilFinished) / 1000)).toInt()
             mDataBinding.progressbarTimeLimit.progress = timeProgress
         }
     }
@@ -63,7 +46,7 @@ class QuizFragment : BaseFragment<FragmentQuizBinding, QuizViewModel>(), Continu
         super.onDestroy()
     }
 
-    fun connectObservables() {
+    private fun connectObservables() {
         mViewModel.mEvents.observe(this, Observer { evt ->
             run {
                 when (evt) {
@@ -84,11 +67,11 @@ class QuizFragment : BaseFragment<FragmentQuizBinding, QuizViewModel>(), Continu
         })
     }
 
-    fun clearObservables() {
+    private fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
     }
 
-    fun showContinueLearnDialog() {
+    private fun showContinueLearnDialog() {
         val dialog = ContinueLearnDialog(this)
         dialog.show(fragmentManager!!, ContinueLearnDialog.TAG)
     }

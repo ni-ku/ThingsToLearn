@@ -26,9 +26,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         super.onDestroy()
     }
 
-    fun connectObservables() {
+    private fun connectObservables() {
     }
 
-    fun clearObservables() {
+    private fun clearObservables() {
     }
 }

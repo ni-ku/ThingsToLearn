@@ -28,7 +28,7 @@ import de.niku.ttl.data.db.entity.TblLearnStat
 abstract class BrainCardsDb : RoomDatabase() {
 
     companion object {
-        const val APP_DB_NAME = "braindcardsdb"
+        private const val APP_DB_NAME = "braindcardsdb"
         @Volatile
         private var INSTANCE: BrainCardsDb? = null
 
@@ -51,14 +51,14 @@ abstract class BrainCardsDb : RoomDatabase() {
                         super.onCreate(db)
                         // run db insertions on seperate thread
                         ioThread {
-                            val cardSetDao = getInstance(context).CardSetDao()
-                            val cardDao = getInstance(context).CardDao()
+                            val cardSetDao = getInstance(context).cardSetDao()
+                            val cardDao = getInstance(context).cardDao()
 
-                            var cardSetWithCards = createExampleCardSet()
+                            val cardSetWithCards = createExampleCardSet()
                             val cardSetId = cardSetDao.insert(cardSetWithCards.cardSet)
 
                             for (c in cardSetWithCards.cards) {
-                                var card = TblCard(
+                                val card = TblCard(
                                     null,
                                     c.front,
                                     c.back,
@@ -72,74 +72,74 @@ abstract class BrainCardsDb : RoomDatabase() {
                 .build()
 
         private fun createExampleCardSet(): CardSetWithCards {
-            var cards: MutableList<TblCard> = mutableListOf()
-            var c0 = TblCard(
+            val cards: MutableList<TblCard> = mutableListOf()
+            val c0 = TblCard(
                 null,
                 "Wer war der 1. Bundespräsident ?",
                 "Theodor Heuss",
                 0
             )
-            var c1 = TblCard(
+            val c1 = TblCard(
                 null,
                 "Wer war der 2. Bundespräsident ?",
                 "Heinrich Lübcke",
                 0
             )
-            var c2 = TblCard(
+            val c2 = TblCard(
                 null,
                 "Wer war der 3. Bundespräsident ?",
                 "Gustav Heinemann",
                 0
             )
-            var c3 = TblCard(
+            val c3 = TblCard(
                 null,
                 "Wer war der 4. Bundespräsident ?",
                 "Walter Scheel",
                 0
             )
-            var c4 = TblCard(
+            val c4 = TblCard(
                 null,
                 "Wer war der 5. Bundespräsident ?",
                 "Karl Carstens",
                 0
             )
-            var c5 = TblCard(
+            val c5 = TblCard(
                 null,
                 "Wer war der 6. Bundespräsident ?",
                 "Richard von Weizsäcker",
                 0
             )
-            var c6 = TblCard(
+            val c6 = TblCard(
                 null,
                 "Wer war der 7. Bundespräsident ?",
                 "Roman Herzog",
                 0
             )
-            var c7 = TblCard(
+            val c7 = TblCard(
                 null,
                 "Wer war der 8. Bundespräsident ?",
                 "Johannes Rau",
                 0
             )
-            var c8 = TblCard(
+            val c8 = TblCard(
                 null,
                 "Wer war der 9. Bundespräsident ?",
                 "Horst Köhler",
                 0
             )
-            var c9 = TblCard(
+            val c9 = TblCard(
                 null,
                 "Wer war der 10. Bundespräsident ?",
                 "Christian Wulff",
                 0
             )
-            var c10 = TblCard(
+            val c10 = TblCard(
                 null,
                 "Wer war der 11. Bundespräsident ?",
                 "Joachim Gauck",
                 0
             )
-            var c11 = TblCard(
+            val c11 = TblCard(
                 null,
                 "Wer war der 12. Bundespräsident ?",
                 "Franz-Walter Steinmeier",
@@ -158,25 +158,24 @@ abstract class BrainCardsDb : RoomDatabase() {
             cards.add(c10)
             cards.add(c11)
 
-            var cardSet = TblCardSet(
+            val cardSet = TblCardSet(
                 null,
                 "Deutsche Bundespräsidenten",
                 cards.size,
                 0,
                 0
             )
-            var cardSetFull = CardSetWithCards(
+
+            return CardSetWithCards(
                 cardSet,
                 cards,
                 mutableListOf()
             )
-
-            return cardSetFull
         }
     }
 
-    abstract fun CardSetDao(): CardSetDao
-    abstract fun CardDao(): CardDao
-    abstract fun CardSetWithCardsDao(): CardSetWithCardsDao
-    abstract fun LearnStatDao(): LearnStatDao
+    abstract fun cardSetDao(): CardSetDao
+    abstract fun cardDao(): CardDao
+    abstract fun cardSetWithCardsDao(): CardSetWithCardsDao
+    abstract fun learnStatDao(): LearnStatDao
 }

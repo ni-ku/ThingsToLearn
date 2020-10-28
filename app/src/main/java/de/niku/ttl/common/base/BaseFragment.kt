@@ -29,8 +29,7 @@ abstract class BaseFragment<D : ViewDataBinding, V : ViewModel> : Fragment() {
         performExtraViewBinding()
         mDataBinding.lifecycleOwner = this
         mDataBinding.executePendingBindings()
-        var view = mDataBinding.root
-        return view
+        return mDataBinding.root
     }
 
     protected abstract fun getLayoutResId() : Int

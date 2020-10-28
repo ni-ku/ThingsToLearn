@@ -9,11 +9,11 @@ import de.niku.ttl.common.resources.ResourceHelper
 import de.niku.ttl.databinding.DialogCardCreateBinding
 
 class CardCreateDialog(
-    val resultReceiver: ResultReceiver,
-    val editParams: CardEditParams?
+    private val resultReceiver: ResultReceiver,
+    private val editParams: CardEditParams?
 ) : BaseDialog<DialogCardCreateBinding, CardCreateViewModel>() {
 
-    constructor(resultReceiver: ResultReceiver) : this(resultReceiver, null) {}
+    constructor(resultReceiver: ResultReceiver) : this(resultReceiver, null)
 
     companion object {
         val TAG: String = CardCreateDialog.toString()
@@ -65,24 +65,24 @@ class CardCreateDialog(
         super.dismiss()
     }
 
-    fun createLifecycleObservers() {
+    private fun createLifecycleObservers() {
         mViewModel.mResHelper = ResourceHelper(context)
         lifecycle.addObserver(mViewModel.mResHelper)
     }
 
-    fun connectObservables() {
+    private fun connectObservables() {
         mViewModel.mEvents.observe(this, Observer { evt ->
             run {
                 when(evt) {
                     is CardCreateEvents.Done -> {
-                        resultReceiver?.onCreateCard(evt.result)
+                        resultReceiver.onCreateCard(evt.result)
                         dialog?.dismiss()
                     }
                     is CardCreateEvents.Cancel -> {
                         dialog?.dismiss()
                     }
                     is CardCreateEvents.EditDone -> {
-                        resultReceiver?.onEditCard(evt.result)
+                        resultReceiver.onEditCard(evt.result)
                         dialog?.dismiss()
                     }
                 }
@@ -91,7 +91,7 @@ class CardCreateDialog(
 
     }
 
-    fun clearObservables() {
+    private fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
     }
 }

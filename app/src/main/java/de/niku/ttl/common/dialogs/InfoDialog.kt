@@ -1,37 +1,32 @@
 package de.niku.ttl.common.dialogs
 
 import android.content.Context
-import android.view.Window
 import androidx.appcompat.app.AlertDialog
 
-class InfoDialog {
+class InfoDialog(
+    context: Context,
+    dialogId: Int,
+    title: Int,
+    message: Int,
+    textConfirm: Int,
+    callback: InfoDialogResultReceiver
+) {
 
     interface InfoDialogResultReceiver {
         fun onConfirm(dialogId: Int)
     }
 
-    constructor(
-        context: Context,
-        dialogId: Int,
-        title: Int,
-        message: Int,
-        textConfirm: Int,
-        callback: InfoDialogResultReceiver
-    ) {
-
-        var dialog: AlertDialog? = AlertDialog.Builder(context)
+    init {
+        val dialog: AlertDialog? = AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
-            .setPositiveButton(textConfirm) { dialog, which ->
+            .setPositiveButton(textConfirm) { _, which ->
                 run {
-                    callback?.onConfirm(which)
+                    callback.onConfirm(which)
                 }
             }
             .create()
-
-        var window: Window = dialog!!.window
-        if (window != null) {
-            dialog.show()
-        }
+        dialog!!.window
+        dialog.show()
     }
 }

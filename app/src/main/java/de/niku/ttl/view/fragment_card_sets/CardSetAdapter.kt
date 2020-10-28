@@ -15,14 +15,14 @@ import de.niku.ttl.common.adapter.BaseAdapter
 import de.niku.ttl.model.CardSet
 
 class CardSetAdapter(
-    val viewModel: CardSetsViewModel?,
+    private val viewModel: CardSetsViewModel?,
     val context: Context?,
     listItems: MutableList<CardSet>
 ) : BaseAdapter<CardSet>(listItems) {
 
-    var isSelectionMode: Boolean = false
-    var selectedPositions: MutableList<Int> = mutableListOf()
-    var actionMode: ActionMode? = null
+    private var isSelectionMode: Boolean = false
+    private var selectedPositions: MutableList<Int> = mutableListOf()
+    private var actionMode: ActionMode? = null
 
     constructor(viewModel: CardSetsViewModel, context: Context?) : this(viewModel, context, mutableListOf())
 
@@ -36,8 +36,8 @@ class CardSetAdapter(
 
     override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, obj: CardSet) {
 
-        var viewHolder: ViewHolder = (holder as ViewHolder)
-        var cardSet: CardSet = obj
+        val viewHolder: ViewHolder = (holder as ViewHolder)
+        val cardSet: CardSet = obj
 
         viewHolder.title.text = cardSet.name
         viewHolder.cardCnt.text = cardSet.cardCnt.toString()
@@ -84,12 +84,12 @@ class CardSetAdapter(
     fun getSelectedItems() : List<CardSet> {
         val selectedItems: MutableList<CardSet> = mutableListOf()
         for (i in selectedPositions) {
-            selectedItems.add(listItems.get(i))
+            selectedItems.add(listItems[i])
         }
         return selectedItems
     }
 
-    fun getMenuClickListener(position: Int) : View.OnClickListener {
+    private fun getMenuClickListener(position: Int) : View.OnClickListener {
         return View.OnClickListener { v ->
             run {
                 val popupMenu = PopupMenu(v.context, v)
@@ -99,22 +99,22 @@ class CardSetAdapter(
                     when (it.itemId) {
                         R.id.menu_edit -> {
                             viewModel?.onCardSetEditClick(position)
-                            true
+                            return@setOnMenuItemClickListener true
                         }
                         R.id.menu_delete -> {
                             viewModel?.onCardSetDeleteClick(position)
-                            true
+                            return@setOnMenuItemClickListener true
                         }
                     }
-                    false
+                    return@setOnMenuItemClickListener false
                 }
                 popupMenu.show()
             }
         }
     }
 
-    fun getItemSelectionListener(position: Int) : View.OnClickListener {
-        return View.OnClickListener { v ->
+    private fun getItemSelectionListener(position: Int) : View.OnClickListener {
+        return View.OnClickListener {
             run {
                 if (selectedPositions.contains(position)) {
                     selectedPositions.remove(position)
@@ -127,28 +127,19 @@ class CardSetAdapter(
         }
     }
 
-    fun getItemClickListener(position: Int) : View.OnClickListener {
-        return View.OnClickListener { v ->
+    private fun getItemClickListener(position: Int) : View.OnClickListener {
+        return View.OnClickListener {
             run {
                 viewModel?.onShowCardSetDetailClick(position)
             }
         }
     }
 
-    class ViewHolder : RecyclerView.ViewHolder {
-
-        var title: TextView
-        var cardCnt: TextView
-        var btnMore: AppCompatImageButton
-        var itemClickView: ConstraintLayout
-        var cbSelected: AppCompatCheckBox
-
-        constructor(view: View) : super(view) {
-            title = view.findViewById(R.id.tv_title)
-            cardCnt = view.findViewById(R.id.tv_cards_cnt)
-            btnMore = view.findViewById(R.id.btn_menu)
-            itemClickView = view.findViewById(R.id.cl_item_view)
-            cbSelected = view.findViewById(R.id.cb_selected)
-        }
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var title: TextView = view.findViewById(R.id.tv_title)
+        var cardCnt: TextView = view.findViewById(R.id.tv_cards_cnt)
+        var btnMore: AppCompatImageButton = view.findViewById(R.id.btn_menu)
+        var itemClickView: ConstraintLayout = view.findViewById(R.id.cl_item_view)
+        var cbSelected: AppCompatCheckBox = view.findViewById(R.id.cb_selected)
     }
 }

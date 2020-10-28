@@ -1,7 +1,6 @@
 package de.niku.ttl.view.dialog_continue_learn
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -12,7 +11,7 @@ import de.niku.ttl.R
 import kotlinx.android.synthetic.main.dialog_continue_learn.view.*
 
 class ContinueLearnDialog(
-    val resultReceiver: ResultReceiver
+    private val resultReceiver: ResultReceiver
 ): DialogFragment() {
 
     interface ResultReceiver {
@@ -40,7 +39,7 @@ class ContinueLearnDialog(
                 .create()
 
             alertDialog.setCanceledOnTouchOutside(false)
-            alertDialog.setOnKeyListener {di, code, evt ->
+            alertDialog.setOnKeyListener { _, code, _ ->
                 run {
                     if (code == KeyEvent.KEYCODE_BACK) {
                         resultReceiver.onDone()
@@ -52,12 +51,12 @@ class ContinueLearnDialog(
             }
 
             alertDialog.setOnShowListener {
-                var positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
                 positiveButton.setOnClickListener {
                     resultReceiver.onContinue()
                     alertDialog.dismiss()
                 }
-                var negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 negativeButton.setOnClickListener {
                     resultReceiver.onDone()
                     alertDialog.dismiss()

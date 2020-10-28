@@ -31,7 +31,7 @@ class ViewCardsViewModel(
                     cardSet.value = cs
                     cards.value = cs.cards
                 }
-            }, { error ->
+            }, {
                 run {
 
                 }

@@ -23,6 +23,6 @@ class TtlApplication : Application(), HasActivityInjector {
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {
-        return daj;
+        return daj
     }
 }

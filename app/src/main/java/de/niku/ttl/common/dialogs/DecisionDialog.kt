@@ -2,47 +2,38 @@ package de.niku.ttl.common.dialogs
 
 import android.app.AlertDialog
 import android.content.Context
-import android.view.Window
 
-class DecisionDialog {
+class DecisionDialog(
+    context: Context,
+    dialogId: Int,
+    title: Int,
+    message: Int,
+    textConfirm: Int,
+    textCancel: Int,
+    callback: DecisionDialogResultReceiver
+) {
 
     interface DecisionDialogResultReceiver {
         fun onConfirm(dialogId: Int)
         fun onCancel(dialogId: Int)
     }
 
-    constructor(
-        context: Context,
-        dialogId: Int,
-        title: Int,
-        message: Int,
-        textConfirm: Int,
-        textCancel: Int,
-        callback: DecisionDialogResultReceiver
-    ) {
-
-        var dialog: AlertDialog? = AlertDialog.Builder(context)
+    init {
+        val dialog: AlertDialog? = AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
-            .setPositiveButton(textConfirm) { dialog, which ->
+            .setPositiveButton(textConfirm) { _, which ->
                 run {
-                    if (callback != null) {
-                        callback.onConfirm(which)
-                    }
+                    callback.onConfirm(which)
                 }
             }
-            .setNegativeButton(textCancel) { dialog, which ->
+            .setNegativeButton(textCancel) { _, which ->
                 run {
-                    if (callback != null) {
-                        callback.onCancel(which)
-                    }
+                    callback.onCancel(which)
                 }
             }
             .create()
-
-        var window: Window = dialog!!.window
-        if (window != null) {
-            dialog.show()
-        }
+        dialog!!.window
+        dialog.show()
     }
 }

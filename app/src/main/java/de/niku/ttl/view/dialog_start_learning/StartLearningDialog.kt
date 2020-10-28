@@ -9,15 +9,11 @@ import de.niku.ttl.common.resources.ResourceHelper
 import de.niku.ttl.databinding.DialogStartLearningBinding
 
 class StartLearningDialog(
-    val resultReceiver: ResultReceiver
+    private val resultReceiver: ResultReceiver
 ) : BaseDialog<DialogStartLearningBinding, StartLearningViewModel>() {
 
     interface ResultReceiver {
         fun onStartLearningDialogResult(result: StartLearningResultData)
-    }
-
-    companion object {
-        val TAG: String = StartLearningDialog.toString()
     }
 
     override fun getLayoutResId(): Int = R.layout.dialog_start_learning
@@ -48,17 +44,17 @@ class StartLearningDialog(
         super.dismiss()
     }
 
-    fun createLifecycleObservers() {
+    private fun createLifecycleObservers() {
         mViewModel.mResHelper = ResourceHelper(context)
         lifecycle.addObserver(mViewModel.mResHelper)
     }
 
-    fun connectObservables() {
+    private fun connectObservables() {
         mViewModel.mEvents.observe(this, Observer { evt ->
             run {
                 when(evt) {
                     is StartLearningEvents.Done -> {
-                        resultReceiver?.onStartLearningDialogResult(evt.result)
+                        resultReceiver.onStartLearningDialogResult(evt.result)
                         dialog?.dismiss()
                     }
                     is StartLearningEvents.Cancel -> {
@@ -67,10 +63,9 @@ class StartLearningDialog(
                 }
             }
         })
-
     }
 
-    fun clearObservables() {
+    private fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
     }
 }

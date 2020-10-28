@@ -10,5 +10,4 @@ class CardSetWithCards(
     val cards: List<TblCard>,
     @Relation(parentColumn = "id", entityColumn = "card_set_id", entity = TblLearnStat::class)
     val stats: List<TblLearnStat>
-) {
-}
+)

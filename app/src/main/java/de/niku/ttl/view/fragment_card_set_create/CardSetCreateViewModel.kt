@@ -18,8 +18,7 @@ class CardSetCreateViewModel(
     val name: MutableLiveData<String> = MutableLiveData()
     val nameError : MutableLiveData<String> = MutableLiveData()
     val cards: MutableLiveData<MutableList<Card>> = MutableLiveData()
-
-    val editCardSet: MutableLiveData<CardSet> = MutableLiveData()
+    private val editCardSet: MutableLiveData<CardSet> = MutableLiveData()
 
     init {
         cards.value = mutableListOf()
@@ -37,38 +36,29 @@ class CardSetCreateViewModel(
                     cards.value = cardSet.cards.toMutableList()
                 }
 
-            }, { error ->
+            }, {
                 run {
                 }
             })
     }
 
     fun createCardClick() {
-        mEvents.value = CardSetCreateEvents.ShowCreateCardDialog()
+        mEvents.value = CardSetCreateEvents.ShowCreateCardDialog
     }
 
     fun addCard(front: String, back: String) {
-        var card = Card(
-            null,
-            front,
-            back
-        )
+        val card = Card(null, front, back)
         cards.value?.add(card)
         cards.value = cards.value
     }
 
     fun onCardEdit(position: Int) {
-        val params = CardEditParams(cards.value!!.get(position), position)
+        val params = CardEditParams(cards.value!![position], position)
         mEvents.value = CardSetCreateEvents.ShowEditCardDialog(params)
     }
 
     fun onCardEdited(position: Int, front: String, back: String) {
-        var card = Card(
-            cards.value?.get(position)?.id,
-            front,
-            back
-        )
-
+        val card = Card(cards.value?.get(position)?.id, front, back)
         cards.value?.removeAt(position)
         cards.value?.add(position, card)
         cards.value = cards.value
@@ -91,7 +81,7 @@ class CardSetCreateViewModel(
     fun finishCreateCardSet() {
         val nameValue = name.value
         if (nameValue == null || nameValue.isEmpty()) {
-            nameError.value = mResHelper?.getString(R.string.create_card_set_from_error_name_empty)
+            nameError.value = mResHelper.getString(R.string.create_card_set_from_error_name_empty)
             return
         } else {
             nameError.value = ""
@@ -106,12 +96,12 @@ class CardSetCreateViewModel(
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({ cardSet ->
+            .subscribe ({
                 run {
-                    mEvents.value = CardSetCreateEvents.CardSetCreateSuccess()
+                    mEvents.value = CardSetCreateEvents.CardSetCreateSuccess
                 }
 
-            }, {error ->
+            }, {
                 run {
                 }
             })
@@ -120,7 +110,7 @@ class CardSetCreateViewModel(
     @SuppressLint("CheckResult")
     fun finishEditCardSet() {
 
-        var cardSet = CardSet(
+        val cardSet = CardSet(
             editCardSet.value!!.id,
             name.value!!,
             cards.value!!.size,
@@ -133,11 +123,11 @@ class CardSetCreateViewModel(
         cardSetRepo.updateCardSet(cardSet)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ v ->
+            .subscribe({
                 run {
-                    mEvents.value = CardSetCreateEvents.CardSetCreateSuccess()
+                    mEvents.value = CardSetCreateEvents.CardSetCreateSuccess
                 }
-            }, { error ->
+            }, {
                 run {
 
                 }

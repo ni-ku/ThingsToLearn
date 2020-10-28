@@ -4,10 +4,9 @@ import androidx.lifecycle.MutableLiveData
 
 class ViewState {
 
-    var state: MutableLiveData<Int>
+    var state: MutableLiveData<Int> = MutableLiveData()
 
-    constructor() {
-        state = MutableLiveData()
+    init {
         state.value = CONTENT
     }
 

@@ -1,6 +1,5 @@
 package de.niku.ttl.view.fragment_card_set_detail
 
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -16,12 +15,10 @@ import de.niku.ttl.R
 import de.niku.ttl.common.base.BaseFragment
 import de.niku.ttl.common.resources.ResourceHelper
 import de.niku.ttl.databinding.FragmentCardSetDetailBinding
-import de.niku.ttl.view.dialog_start_learning.StartLearningDialog
-import de.niku.ttl.view.dialog_start_learning.StartLearningResultData
 
 class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSetDetailViewModel>() {
 
-    val args: CardSetDetailFragmentArgs by navArgs()
+    private val args: CardSetDetailFragmentArgs by navArgs()
 
     override fun getLayoutResId(): Int = R.layout.fragment_card_set_detail
     override fun getViewBindingId(): Int = BR.viewmodel
@@ -39,7 +36,7 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
         mViewModel.initById(cardSetId)
     }
 
-    fun createLifecycleObservers() {
+    private fun createLifecycleObservers() {
         mViewModel.mResHelper = ResourceHelper(context)
         lifecycle.addObserver(mViewModel.mResHelper)
     }
@@ -47,16 +44,8 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.card_set_detail_menu, menu)
         for (item in menu.iterator()) {
-            if (item.getIcon() != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    item.icon.setTint(
-                            context!!.theme.resources.getColor(R.color.white, null)
-                    )
-                } else {
-                    item.icon.setTint(
-                        context!!.theme.resources.getColor(R.color.white)
-                    )
-                }
+            if (item.icon != null) {
+                item.icon.setTint(context!!.theme.resources.getColor(R.color.white, null))
             }
         }
         super.onCreateOptionsMenu(menu, inflater)
@@ -77,7 +66,7 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
         super.onDestroy()
     }
 
-    fun connectObservables() {
+    private fun connectObservables() {
         mViewModel.mEvents.observe(this, Observer { evt ->
             run {
                 when (evt) {
@@ -109,7 +98,7 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
 
     }
 
-    fun clearObservables() {
+    private fun clearObservables() {
         mViewModel.mEvents.removeObservers(this)
     }
 

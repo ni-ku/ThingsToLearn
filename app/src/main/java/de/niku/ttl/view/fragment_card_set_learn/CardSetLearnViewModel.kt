@@ -75,7 +75,7 @@ class CardSetLearnViewModel(
             cardSet.value!!.completed += 1
             updateCompletedCol()
             mCurIndex = -1
-            mEvents.value = CardSetLearnEvents.CardSetDone()
+            mEvents.value = CardSetLearnEvents.CardSetDone
             return
         }
 

@@ -8,11 +8,10 @@ import de.niku.ttl.common.adapter.BaseAdapter
 import de.niku.ttl.model.Card
 
 class CardAdapter(
-    val viewModel: ViewCardsViewModel?,
     list: MutableList<Card>
 ) : BaseAdapter<Card>(list) {
 
-    constructor(viewModel: ViewCardsViewModel) : this(viewModel, mutableListOf())
+    constructor() : this(mutableListOf())
 
     override fun getLayoutId(position: Int, obj: Card): Int {
         return R.layout.list_item_card_plain
@@ -24,21 +23,17 @@ class CardAdapter(
 
     override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, obj: Card) {
 
-        var viewHolder: ViewHolder = (holder as ViewHolder)
-        var card: Card = obj
+        val viewHolder: ViewHolder = (holder as ViewHolder)
+        val card: Card = obj
 
-        viewHolder.tvFront.text = card.front
-        viewHolder.tvBack.text = card.back
+        viewHolder.run {
+            tvFront.text = card.front
+            tvBack.text = card.back
+        }
     }
 
-    class ViewHolder : RecyclerView.ViewHolder {
-
-        var tvFront: TextView
-        var tvBack: TextView
-
-        constructor(view: View) : super(view) {
-            tvFront = view.findViewById(R.id.tv_front)
-            tvBack = view.findViewById(R.id.tv_back)
-        }
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var tvFront: TextView = view.findViewById(R.id.tv_front)
+        var tvBack: TextView = view.findViewById(R.id.tv_back)
     }
 }

@@ -10,7 +10,7 @@ import de.niku.ttl.common.adapter.BaseAdapter
 import de.niku.ttl.model.Card
 
 class CardAdapter(
-    val viewModel: CardSetCreateViewModel?,
+    private val viewModel: CardSetCreateViewModel?,
     list: MutableList<Card>
 ) : BaseAdapter<Card>(list) {
 
@@ -21,20 +21,20 @@ class CardAdapter(
     }
 
     override fun getViewHolder(view: View, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolder(view)
+        return ViewHolder(view = view)
     }
 
     override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, obj: Card) {
-
-        var viewHolder: ViewHolder = (holder as ViewHolder)
-        var card: Card = obj
-
-        viewHolder.tvFront.text = card.front
-        viewHolder.tvBack.text = card.back
-        viewHolder.btnMore.setOnClickListener(getMenuClickListener(position))
+        val viewHolder = (holder as ViewHolder)
+        val card: Card = obj
+        viewHolder.run {
+            tvFront.text = card.front
+            tvBack.text = card.back
+            btnMore.setOnClickListener(getMenuClickListener(position))
+        }
     }
 
-    fun getMenuClickListener(position: Int) : View.OnClickListener {
+    private fun getMenuClickListener(position: Int) : View.OnClickListener {
         return View.OnClickListener { v ->
             run {
                 val popupMenu = PopupMenu(v.context, v)
@@ -44,30 +44,23 @@ class CardAdapter(
                     when (it.itemId) {
                         R.id.menu_edit -> {
                             viewModel?.onCardEdit(position)
-                            true
+                            return@setOnMenuItemClickListener true
                         }
                         R.id.menu_delete -> {
                             viewModel?.onCardDelete(position)
-                            true
+                            return@setOnMenuItemClickListener true
                         }
                     }
-                    false
+                    return@setOnMenuItemClickListener false
                 }
                 popupMenu.show()
             }
         }
     }
 
-    class ViewHolder : RecyclerView.ViewHolder {
-
-        var tvFront: TextView
-        var tvBack: TextView
-        var btnMore: AppCompatImageButton
-
-        constructor(view: View) : super(view) {
-            tvFront = view.findViewById(R.id.tv_front)
-            tvBack = view.findViewById(R.id.tv_back)
-            btnMore = view.findViewById(R.id.btn_menu)
-        }
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var tvFront: TextView = view.findViewById(R.id.tv_front)
+        var tvBack: TextView = view.findViewById(R.id.tv_back)
+        var btnMore: AppCompatImageButton = view.findViewById(R.id.btn_menu)
     }
 }

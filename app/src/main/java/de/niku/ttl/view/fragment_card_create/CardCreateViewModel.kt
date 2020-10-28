@@ -11,8 +11,8 @@ class CardCreateViewModel: BaseViewModel<CardCreateEvents>() {
     var frontValueError: MutableLiveData<String> = MutableLiveData()
     var backValue: MutableLiveData<String> = MutableLiveData()
     var backValueError: MutableLiveData<String> = MutableLiveData()
-    val isEditMode: MutableLiveData<Boolean> = MutableLiveData()
-    val editPosition: MutableLiveData<Int> = MutableLiveData()
+    private val isEditMode: MutableLiveData<Boolean> = MutableLiveData()
+    private val editPosition: MutableLiveData<Int> = MutableLiveData()
 
     init {
         isEditMode.value = false
@@ -30,27 +30,27 @@ class CardCreateViewModel: BaseViewModel<CardCreateEvents>() {
         val backVal = backValue.value
 
         if (frontVal == null || frontVal.isEmpty()) {
-            frontValueError.value = mResHelper?.getString(R.string.create_card_form_error_front_empty)
+            frontValueError.value = mResHelper.getString(R.string.create_card_form_error_front_empty)
             return
         } else {
             frontValueError.value = ""
         }
 
         if (backVal == null || backVal.isEmpty()) {
-            backValueError.value = mResHelper?.getString(R.string.create_card_form_error_back_empty)
+            backValueError.value = mResHelper.getString(R.string.create_card_form_error_back_empty)
             return
         } else {
             backValueError.value = ""
         }
 
         if (isEditMode.value == false) {
-            var resultData = CardCreateResultData(
+            val resultData = CardCreateResultData(
                 frontValue.value!!,
                 backValue.value!!
             )
             mEvents.value = CardCreateEvents.Done(resultData)
         } else {
-            var resultData = CardEditResultData(
+            val resultData = CardEditResultData(
                 editPosition.value!!,
                 frontValue.value!!,
                 backValue.value!!
@@ -60,6 +60,6 @@ class CardCreateViewModel: BaseViewModel<CardCreateEvents>() {
     }
 
     fun cancel() {
-        mEvents.value = CardCreateEvents.Cancel()
+        mEvents.value = CardCreateEvents.Cancel
     }
 }

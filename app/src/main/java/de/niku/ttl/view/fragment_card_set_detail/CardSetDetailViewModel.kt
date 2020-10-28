@@ -14,12 +14,8 @@ class CardSetDetailViewModel(
     val cardSetRepo: CardSetRepo
 ) : BaseViewModel<CardSetDetailEvents>() {
 
-    companion object {
-        val TAG: String = CardSetDetailViewModel.toString()
-    }
-
     val cardSet: MutableLiveData<CardSet> = MutableLiveData()
-    val vdName: MutableLiveData<String> = MutableLiveData()
+    private val vdName: MutableLiveData<String> = MutableLiveData()
     val vdLearnMode: MutableLiveData<Int> = MutableLiveData()
     val vdViceVersa: MutableLiveData<Boolean> = MutableLiveData()
     val vdViceVersaEnabled: MutableLiveData<Boolean> = MutableLiveData()
@@ -54,8 +50,7 @@ class CardSetDetailViewModel(
     }
 
     @SuppressLint("CheckResult")
-    fun fetchCardSet(id: Long) {
-
+    private fun fetchCardSet(id: Long) {
         cardSetRepo.fetchCardSet(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -65,15 +60,14 @@ class CardSetDetailViewModel(
                     vdName.value = cs.name
                     calcStats()
                 }
-            }, { error ->
+            }, {
                 run {
-
                 }
             })
     }
 
     fun onStartLearningClick() {
-        var params = StartLearningParams(
+        val params = StartLearningParams(
             cardSet.value?.id!!,
             cardSet.value?.name!!,
             vdViceVersa.value!!,
@@ -96,7 +90,7 @@ class CardSetDetailViewModel(
         )
     }
 
-    fun calcStats() {
+    private fun calcStats() {
 
         if (cardSet.value!!.started >= 1) {
             val complPercent: Float =
@@ -104,7 +98,7 @@ class CardSetDetailViewModel(
             vdCompleted.value = complPercent
         }
 
-        if (cardSet.value!!.stats != null) {
+        if (cardSet.value?.stats != null) {
             var wrong = 0
             var right = 0
             var lastTimePlayed = cardSet.value!!.stats[0].date

@@ -22,8 +22,8 @@ class FsRepoImpl(var context: Context?) : FsRepo, LifecycleObserver {
         return Observable.create<String> {
             try {
                 val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).absolutePath
-                var gson = Gson()
-                var json = gson.toJson(list)
+                val gson = Gson()
+                val json = gson.toJson(list)
                 val fileName = "CardSet-Export.json"
                 val f = File(dir, fileName)
                 val fw = FileWriter(f)

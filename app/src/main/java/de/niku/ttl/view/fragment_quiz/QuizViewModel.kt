@@ -34,17 +34,17 @@ class QuizViewModel(
     val vdOption3Color: MutableLiveData<Int> = MutableLiveData()
     val vdOption4Text: MutableLiveData<String> = MutableLiveData()
     val vdOption4Color: MutableLiveData<Int> = MutableLiveData()
-    val cardOptionIndices: MutableLiveData<IntArray> = MutableLiveData()
-    var mCurIndex: Int = -1
-    var mViceVersa: Boolean = false
-    var mShuffle: Boolean = false
-    var correctOption: Int = -1
-    var optionSelected: Boolean = false
-    var learnStat: LearnStat? = null
+    private val cardOptionIndices: MutableLiveData<IntArray> = MutableLiveData()
+    private var mCurIndex: Int = -1
+    private var mViceVersa: Boolean = false
+    private var mShuffle: Boolean = false
+    private var correctOption: Int = -1
+    private var optionSelected: Boolean = false
+    private var learnStat: LearnStat? = null
 
-    val colorDefault: Int = Color.parseColor("#ffffffff")
-    val colorCorrect: Int = Color.parseColor("#ff00ff00")
-    val colorWrong: Int = Color.parseColor("#ffff0000")
+    private val colorDefault: Int = Color.parseColor("#ffffffff")
+    private val colorCorrect: Int = Color.parseColor("#ff00ff00")
+    private val colorWrong: Int = Color.parseColor("#ffff0000")
 
     init {
         cardOptionIndices.value = intArrayOf(-1, -1, -1, -1)
@@ -69,14 +69,14 @@ class QuizViewModel(
                     cards = cs.cards.toMutableList()
                     onStart()
                 }
-            }, { error ->
+            }, {
                 run {
 
                 }
             })
     }
 
-    fun onStart() {
+    private fun onStart() {
         if (mShuffle) {
             cards.shuffle()
         }
@@ -94,11 +94,11 @@ class QuizViewModel(
         cardSetRepo.addLearnStat(cardSet.value!!.id!!, learnStat!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ cs ->
+            .subscribe({
                 run {
                     onStart()
                 }
-            }, { error ->
+            }, {
                 run {
 
                 }
@@ -118,18 +118,18 @@ class QuizViewModel(
                 learnStat!!.right += 1
             }
             setOptionColor(correctOption, colorCorrect)
-            mEvents.value = QuizEvents.StopSelectionTimer()
+            mEvents.value = QuizEvents.StopSelectionTimer
         }
     }
 
-    fun onNext() {
+    private fun onNext() {
         optionSelected = false
         mCurIndex++
         if (mCurIndex == cards.size) {
             cardSet.value!!.completed += 1
             updateCompletedCol()
             mCurIndex = -1
-            mEvents.value = QuizEvents.CardSetDone()
+            mEvents.value = QuizEvents.CardSetDone
             return
         }
 
@@ -138,13 +138,13 @@ class QuizViewModel(
 
         resetCardOptionIndices()
         resetOptionColors()
-        var rndPos = randFromRange(0, 3)
+        val rndPos = randFromRange(0, 3)
         correctOption = rndPos
         cardOptionIndices.value!![rndPos] = mCurIndex
         setOptionValue(card, rndPos)
 
-        var rndSetIdx = 0
-        var rndCard: Card? = null
+        var rndSetIdx: Int
+        var rndCard: Card?
         for (i in cardOptionIndices.value!!.indices) {
             if (cardOptionIndices.value!![i] < 0) {
                 rndSetIdx = selectRandomUnusedCardIndex()
@@ -154,10 +154,10 @@ class QuizViewModel(
             }
         }
 
-        mEvents.value = QuizEvents.StartSelectionTimer()
+        mEvents.value = QuizEvents.StartSelectionTimer
     }
 
-    fun setOptionValue(card: Card, option: Int) {
+    private fun setOptionValue(card: Card, option: Int) {
         when (option) {
             0 -> {
                 vdOption1Text.value = card.back
@@ -174,7 +174,7 @@ class QuizViewModel(
         }
     }
 
-    fun setOptionColor(option: Int, color: Int) {
+    private fun setOptionColor(option: Int, color: Int) {
         when (option) {
             0 -> {
                 vdOption1Color.value = color
@@ -191,14 +191,14 @@ class QuizViewModel(
         }
     }
 
-    fun resetOptionColors() {
+    private fun resetOptionColors() {
         setOptionColor(0, colorDefault)
         setOptionColor(1, colorDefault)
         setOptionColor(2, colorDefault)
         setOptionColor(3, colorDefault)
     }
 
-    fun selectRandomUnusedCardIndex(): Int {
+    private fun selectRandomUnusedCardIndex(): Int {
         val min = 0
         val max = cardSet.value!!.cardCnt - 1
         var rndSetIdx = randFromRange(min, max)
@@ -208,14 +208,14 @@ class QuizViewModel(
         return rndSetIdx
     }
 
-    fun resetCardOptionIndices() {
+    private fun resetCardOptionIndices() {
         for (i in cardOptionIndices.value!!.indices) {
             cardOptionIndices.value!![i] = -1
         }
 
     }
 
-    fun randFromRange(min: Int, max: Int): Int {
+    private fun randFromRange(min: Int, max: Int): Int {
         return min + (Math.random() * ((max - min) + 1)).toInt()
     }
 
@@ -260,11 +260,11 @@ class QuizViewModel(
         cardSetRepo.addLearnStat(cardSet.value!!.id!!, learnStat!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ cs ->
+            .subscribe({
                 run {
-                    mEvents.value = QuizEvents.CloseView()
+                    mEvents.value = QuizEvents.CloseView
                 }
-            }, { error ->
+            }, {
                 run {
 
                 }
