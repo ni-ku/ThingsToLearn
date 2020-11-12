@@ -3,10 +3,7 @@ package de.niku.ttl.di.module
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import de.niku.ttl.data.db.dao.CardDao
-import de.niku.ttl.data.db.dao.CardSetDao
-import de.niku.ttl.data.db.dao.CardSetWithCardsDao
-import de.niku.ttl.data.db.dao.LearnStatDao
+import de.niku.ttl.data.db.dao.*
 import de.niku.ttl.data.fs.FsRepo
 import de.niku.ttl.data.fs.FsRepoImpl
 import de.niku.ttl.data.repo.card_set.CardSetRepo
@@ -20,11 +17,13 @@ class DataRepoModule {
     @Singleton
     fun provideCardSetRepo(cardSetDao: CardSetDao,
                            cardDao: CardDao,
+                           questionDao: QuestionDao,
                            cardSetWithCardsDao: CardSetWithCardsDao,
                            learnStatDao: LearnStatDao) : CardSetRepo {
         return CardSetRepoImpl(
             cardSetDao,
             cardDao,
+            questionDao,
             cardSetWithCardsDao,
             learnStatDao
         )

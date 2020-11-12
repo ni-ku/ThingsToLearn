@@ -9,16 +9,20 @@ import androidx.core.view.iterator
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import de.niku.ttl.BR
 
 import de.niku.ttl.R
 import de.niku.ttl.common.base.BaseFragment
 import de.niku.ttl.common.resources.ResourceHelper
 import de.niku.ttl.databinding.FragmentCardSetDetailBinding
+import de.niku.ttl.view.fragment_card_set_detail.adapter.QuestionAdapter
 
 class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSetDetailViewModel>() {
 
     private val args: CardSetDetailFragmentArgs by navArgs()
+    private lateinit var questionAdapter: QuestionAdapter
 
     override fun getLayoutResId(): Int = R.layout.fragment_card_set_detail
     override fun getViewBindingId(): Int = BR.viewmodel
@@ -31,6 +35,15 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
         connectObservables()
         createLifecycleObservers()
         mViewModel.initFromStringRes()
+
+        if (!this::questionAdapter.isInitialized) {
+            questionAdapter = QuestionAdapter()
+        }
+
+        mDataBinding.rvQuestions.layoutManager = LinearLayoutManager(context)
+        mDataBinding.rvQuestions.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        mDataBinding.rvQuestions.setHasFixedSize(true)
+        mDataBinding.rvQuestions.adapter = questionAdapter
 
         val cardSetId = args.cardSetId
         mViewModel.initById(cardSetId)
@@ -95,6 +108,15 @@ class CardSetDetailFragment : BaseFragment<FragmentCardSetDetailBinding, CardSet
                 }
             }
         })
+
+        mViewModel.vdQuestions.observe(this, Observer { list ->
+            run {
+                if (this::questionAdapter.isInitialized) {
+                    questionAdapter.listItems = list.toMutableList()
+                    questionAdapter.notifyDataSetChanged()
+                }
+
+        } })
 
     }
 

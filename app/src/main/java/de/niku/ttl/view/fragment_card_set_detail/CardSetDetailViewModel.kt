@@ -7,6 +7,7 @@ import de.niku.ttl.R
 import de.niku.ttl.common.base.BaseViewModel
 import de.niku.ttl.data.repo.card_set.CardSetRepo
 import de.niku.ttl.model.CardSet
+import de.niku.ttl.model.Question
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -23,6 +24,7 @@ class CardSetDetailViewModel(
     val vdCompleted: MutableLiveData<Float> = MutableLiveData()
     val vdCorrect: MutableLiveData<Float> = MutableLiveData()
     val vdLastTimePlayed: MutableLiveData<String> = MutableLiveData()
+    val vdQuestions: MutableLiveData<List<Question>> = MutableLiveData()
 
     init {
         vdLearnMode.value = R.id.rb_mode_normal
@@ -58,6 +60,7 @@ class CardSetDetailViewModel(
                 run {
                     cardSet.value = cs
                     vdName.value = cs.name
+                    vdQuestions.value = cs.questions
                     calcStats()
                 }
             }, {

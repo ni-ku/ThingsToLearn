@@ -136,6 +136,20 @@ class QuizViewModel(
         val card = cards[mCurIndex]
         vdQuestion.value = card.front
 
+        if (cardSet.value!!.questions.isEmpty()) {
+            //vdQuestion.value = card.front
+            // what to do here ?
+        } else {
+            val question = cardSet.value!!.questions.get(0)
+            val idxStart: Pair<Int, String>? = question.text.findAnyOf(listOf("{"), 0, false)
+            val idxEnd: Pair<Int, String>? = question.text.findAnyOf(listOf("}"), 0, false)
+            val q1: String = question.text.subSequence(0, idxStart!!.first).toString()
+            val q2: String = question.text.subSequence(idxEnd!!.first + 1, question.text.length).toString()
+
+            var fullText = q1 + " " + card.front + " " + q2
+            vdQuestion.value = fullText
+        }
+
         resetCardOptionIndices()
         resetOptionColors()
         val rndPos = randFromRange(0, 3)

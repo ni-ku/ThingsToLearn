@@ -23,9 +23,10 @@
 
       <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="match_parent"
           android:orientation="vertical"
-          android:layout_marginLeft="@dimen/spacing_xlarge"
+          android:paddingStart="@dimen/spacing_normal"
+          android:paddingEnd="@dimen/spacing_normal"
           android:layout_marginBottom="@dimen/spacing_normal"
           >
 
@@ -86,7 +87,39 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical"
-          android:layout_marginLeft="@dimen/spacing_xlarge"
+          android:layout_weight="1"
+          android:paddingStart="@dimen/spacing_normal"
+          android:paddingEnd="@dimen/spacing_normal"
+          >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/App.TextView.Subtitle.Accent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/questions"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_questions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/list_item_question_plain" />
+
+      </LinearLayout>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/colorPrimary"/>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:paddingStart="@dimen/spacing_normal"
+          android:paddingEnd="@dimen/spacing_normal"
           android:layout_marginBottom="@dimen/spacing_normal"
           >
 
@@ -159,7 +192,6 @@
               style="@style/Widget.AppCompat.ProgressBar.Horizontal"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_weight="2"
               android:progressBackgroundTint="@color/black"
               android:min="0"
               android:max="100"
@@ -204,7 +236,6 @@
               style="@style/Widget.AppCompat.ProgressBar.Horizontal"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_weight="2"
               android:progressBackgroundTint="@color/black"
               android:min="0"
               android:max="100"
@@ -221,28 +252,26 @@
           android:layout_height="1dp"
           android:background="@color/colorPrimary"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="bottom"
-        android:paddingLeft="@dimen/spacing_normal"
-        android:paddingRight="@dimen/spacing_normal"
-        android:paddingTop="@dimen/spacing_small"
-        android:paddingBottom="@dimen/spacing_small"
-        >
-
-      <com.google.android.material.button.MaterialButton
+      <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@string/start_lerning"
-          android:onClick="@{(v) -> viewmodel.onStartLearningClick()}"
-      />
+          android:orientation="vertical"
+          android:paddingLeft="@dimen/spacing_normal"
+          android:paddingRight="@dimen/spacing_normal"
+          android:paddingTop="@dimen/spacing_small"
+          android:paddingBottom="@dimen/spacing_small"
+          >
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/start_lerning"
+            android:onClick="@{(v) -> viewmodel.onStartLearningClick()}"
+            />
+
+      </LinearLayout>
 
     </LinearLayout>
-
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

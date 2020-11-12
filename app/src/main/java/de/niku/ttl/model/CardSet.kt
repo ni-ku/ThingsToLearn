@@ -7,6 +7,7 @@ data class CardSet(
     val name: String,
     val cardCnt: Int,
     val cards: List<Card>,
+    val questions: List<Question>,
     val stats: List<LearnStat>,
     var started: Int,
     var completed: Int
@@ -17,6 +18,7 @@ data class CardSet(
                 item.id,
                 item.name,
                 item.cardCnt,
+                mutableListOf(),
                 mutableListOf(),
                 mutableListOf(),
                 0,

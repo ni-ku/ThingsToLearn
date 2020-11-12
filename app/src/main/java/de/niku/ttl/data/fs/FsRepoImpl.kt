@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.google.gson.Gson
+import de.niku.ttl.Constants
 import de.niku.ttl.model.CardSet
 import io.reactivex.Observable
 import java.io.File
@@ -24,7 +25,7 @@ class FsRepoImpl(var context: Context?) : FsRepo, LifecycleObserver {
                 val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).absolutePath
                 val gson = Gson()
                 val json = gson.toJson(list)
-                val fileName = "CardSet-Export.json"
+                val fileName = "CardSet-Export." + Constants.EXPORT_FILE_EXTENSION
                 val f = File(dir, fileName)
                 val fw = FileWriter(f)
                 fw.write(json)

@@ -29,11 +29,18 @@
   <string name="front_colon">Front:</string>
   <string name="back_colon">Back:</string>
   <string name="create_card_set_from_error_name_empty">Name value can\'t be empty</string>
+  <string name="question_colon">Question:</string>
 
   <!-- Create Card Dialog -->
   <string name="create_card">Create Card</string>
   <string name="create_card_form_error_front_empty">Front value can\'t be empty</string>
   <string name="create_card_form_error_back_empty">Back value can\'t be empty</string>
+
+  <!-- Create Question Dialog -->
+  <string name="question">Question</string>
+  <string name="create_question_dialog_title">Create Question</string>
+  <string name="create_question_form_error_question_empty">Question value can\'t be empty</string>
+  <string name="create_question_form_error_question_include_value">Question has to include {front} or {back}</string>
 
   <!-- CardSet Detail Fragment -->
   <string name="start_lerning">Start learning</string>
@@ -42,6 +49,7 @@
   <string name="vice_versa">Vice Versa</string>
   <string name="shuffle">Shuffle</string>
   <string name="statistics">Statistics</string>
+  <string name="questions">Questions</string>
   <string name="completed">Completed</string>
   <string name="correct">Correct</string>
   <string name="last_time_played">Last time played</string>

@@ -4,10 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import de.niku.ttl.data.db.BrainCardsDb
-import de.niku.ttl.data.db.dao.CardDao
-import de.niku.ttl.data.db.dao.CardSetDao
-import de.niku.ttl.data.db.dao.CardSetWithCardsDao
-import de.niku.ttl.data.db.dao.LearnStatDao
+import de.niku.ttl.data.db.dao.*
 import javax.inject.Singleton
 
 @Module
@@ -41,5 +38,11 @@ class DbModule {
     @Singleton
     fun provideLearnStatDao(db: BrainCardsDb?): LearnStatDao {
         return db!!.learnStatDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideQuestionDao(db: BrainCardsDb?): QuestionDao {
+        return db!!.questionDao()
     }
 }

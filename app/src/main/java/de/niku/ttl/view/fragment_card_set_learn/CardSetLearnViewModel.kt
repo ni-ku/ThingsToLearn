@@ -2,11 +2,11 @@ package de.niku.ttl.view.fragment_card_set_learn
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
-import de.niku.ttl.Constants
 import de.niku.ttl.common.base.BaseViewModel
 import de.niku.ttl.data.repo.card_set.CardSetRepo
 import de.niku.ttl.model.Card
 import de.niku.ttl.model.CardSet
+import de.niku.ttl.model.Question
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -48,7 +48,7 @@ class CardSetLearnViewModel(
             })
     }
 
-    fun onStart() {
+    private fun onStart() {
         if (mShuffle) {
             cards.shuffle()
         }
@@ -79,15 +79,36 @@ class CardSetLearnViewModel(
             return
         }
 
-        val card = cards!!.get(mCurIndex)
+        val card = cards!![mCurIndex]
 
-        if (!mViceVersa) {
-            vdFront.value = card.front
-            vdBack.value = card.back
-        } else {
-            vdFront.value = card.back
-            vdBack.value = card.front
+        var front = card.front
+        var back = card.back
+
+        if (cardSet.value!!.questions.isNotEmpty()) {
+            val question = cardSet.value!!.questions[0]
+            front = parseQuestionAndReplacePlaceholder(question, card)
         }
+
+        setFrontBackValue(front, back)
+    }
+
+    private fun setFrontBackValue(front: String, back: String) {
+        if (!mViceVersa) {
+            vdFront.value = front
+            vdBack.value = back
+        } else {
+            vdFront.value = back
+            vdBack.value = front
+        }
+    }
+
+    private fun parseQuestionAndReplacePlaceholder(question: Question, card: Card): String {
+        val idxStart: Pair<Int, String>? = question.text.findAnyOf(listOf("{"), 0, false)
+        val idxEnd: Pair<Int, String>? = question.text.findAnyOf(listOf("}"), 0, false)
+        val q1: String = question.text.subSequence(0, idxStart!!.first).toString()
+        val q2: String = question.text.subSequence(idxEnd!!.first + 1, question.text.length).toString()
+
+        return q1 + card.front + q2
     }
 
     @SuppressLint("CheckResult")
