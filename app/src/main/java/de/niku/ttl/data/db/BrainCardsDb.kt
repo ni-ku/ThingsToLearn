@@ -7,21 +7,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import de.niku.ttl.common.executors.ioThread
-import de.niku.ttl.data.db.dao.CardDao
-import de.niku.ttl.data.db.dao.CardSetDao
-import de.niku.ttl.data.db.dao.CardSetWithCardsDao
-import de.niku.ttl.data.db.dao.LearnStatDao
-import de.niku.ttl.data.db.entity.CardSetWithCards
-import de.niku.ttl.data.db.entity.TblCard
-import de.niku.ttl.data.db.entity.TblCardSet
-import de.niku.ttl.data.db.entity.TblLearnStat
+import de.niku.ttl.data.db.dao.*
+import de.niku.ttl.data.db.entity.*
 
 @Database(
     version = 1,
     entities = [
         TblCardSet::class,
         TblCard::class,
-        TblLearnStat::class
+        TblLearnStat::class,
+        TblQuestion::class
     ]
 )
 @TypeConverters(DbTypeConverters::class)
@@ -169,6 +164,7 @@ abstract class BrainCardsDb : RoomDatabase() {
             return CardSetWithCards(
                 cardSet,
                 cards,
+                mutableListOf(),
                 mutableListOf()
             )
         }
@@ -178,4 +174,5 @@ abstract class BrainCardsDb : RoomDatabase() {
     abstract fun cardDao(): CardDao
     abstract fun cardSetWithCardsDao(): CardSetWithCardsDao
     abstract fun learnStatDao(): LearnStatDao
+    abstract fun questionDao(): QuestionDao
 }
