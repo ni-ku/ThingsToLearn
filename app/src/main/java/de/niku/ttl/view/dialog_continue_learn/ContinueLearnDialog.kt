@@ -31,10 +31,10 @@ class ContinueLearnDialog(
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             val alertDialog = builder
-                .setTitle(context!!.getString(R.string.play_again))
+                .setTitle(requireContext().getString(R.string.play_again))
                 .setView(view)
-                .setPositiveButton(context!!.getString(R.string.restart), null)
-                .setNegativeButton(context!!.getString(R.string.cancel), null)
+                .setPositiveButton(requireContext().getString(R.string.restart), null)
+                .setNegativeButton(requireContext().getString(R.string.cancel), null)
                 .setCancelable(false)
                 .create()
 
