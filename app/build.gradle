@@ -22,13 +22,16 @@ android {
         }
     }
 
-    dataBinding {
-        enabled true
+    buildFeatures {
+        viewBinding true
+        dataBinding true
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 
 
@@ -58,9 +61,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
 
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_support_v4_version"
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
@@ -85,9 +87,8 @@ dependencies {
     implementation "io.noties.markwon:core:$markwon_version"
 
     // test dependencies
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "com.android.support.test:runner:$test_runner_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_core_version"
     testImplementation "androidx.room:room-testing:$room_version"
 }
